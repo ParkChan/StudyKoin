@@ -1,39 +1,73 @@
 package com.examsample.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.examsample.R
-import com.examsample.network.data.source.remote.GoodChoiceRepository
+import com.examsample.common.BaseFragment
+import com.examsample.common.ListScrollEvent
+import com.examsample.databinding.FragmentHomeBinding
+import com.examsample.network.api.GoodChoiceApi
+import com.examsample.ui.home.remote.SearchProductRemoteDataSource
+import com.examsample.ui.home.repository.GoodChoiceRepository
+import com.examsample.ui.home.viewmodel.HomeViewModel
+import com.orhanobut.logger.Logger
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(
+    R.layout.fragment_home
+) {
 
-    private lateinit var homeViewModel: HomeViewModel
-
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
-    }
+    private val productAdapter = ProductAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val repository = GoodChoiceRepository()
-        repository.search(1)
+        binding.rvProductList.adapter = productAdapter
+
+        initViewModel()
+        iniViewModelObserve()
+        initRecyclerViewPageEvent()
+    }
+
+    private fun initViewModel() {
+        binding.homeViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return HomeViewModel(
+                    GoodChoiceRepository(
+                        compositeDisposable,
+                        SearchProductRemoteDataSource(GoodChoiceApi.create())
+                    )
+                ) as T
+            }
+        }).get(HomeViewModel::class.java)
+    }
+
+    private fun iniViewModelObserve() {
+        binding.homeViewModel?.productListData?.observe(viewLifecycleOwner, Observer {
+            Logger.d("homeViewModel observe productListData $it")
+        })
+        binding.homeViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
+            Logger.d("homeViewModel observe errorMessage $it")
+            showToast(getString(R.string.common_toast_msg_network_error))
+        })
+    }
+
+    private fun initRecyclerViewPageEvent() {
+        setRecyclerViewScrollListener(binding.rvProductList, object : ListScrollEvent {
+
+            override fun onScrolled(
+                visibleItemCount: Int,
+                lastVisibleItem: Int,
+                totalItemCount: Int
+            ) {
+                binding.homeViewModel?.listScrolled(
+                    visibleItemCount,
+                    lastVisibleItem,
+                    totalItemCount
+                )
+            }
+        })
     }
 }

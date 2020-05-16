@@ -2,11 +2,10 @@ package com.examsample.network.api
 
 import com.examsample.BuildConfig
 import com.examsample.network.BASE_URL
-import com.examsample.network.data.model.res.ResProductListModel
+import com.examsample.ui.home.model.res.ResProductListModel
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

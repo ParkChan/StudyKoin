@@ -2,4 +2,7 @@
     <string name="app_name">ExamSample</string>
     <string name="title_home">Home</string>
     <string name="title_bookmark">BookMark</string>
+
+
+    <string name="common_toast_msg_network_error">잠시 후 다시 이용해주세요.</string>
 </resources>

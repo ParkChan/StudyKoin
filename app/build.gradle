@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.laonsports.examsample"
+        applicationId "com.examsample"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -26,7 +26,9 @@ android {
 // To inline the bytecode built with JVM target 1.8 into
 // bytecode that is being built with JVM target 1.6. (e.g. navArgs)
 
-
+    dataBinding {
+        enabled = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -53,24 +55,28 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    /* Logger */
+    //Logger
     implementation 'com.orhanobut:logger:2.2.0'
 
-    // retrofit2
+    //retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.7.1"
 
-    // RxJava
+    //RxJava
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
-    // Room
+    //Room
     implementation "androidx.room:room-runtime:2.2.5"
     testImplementation "androidx.room:room-testing:2.2.5"
     kapt "androidx.room:room-compiler:2.2.5"
     annotationProcessor "androidx.room:room-compiler:2.2.5"
     implementation "androidx.room:room-rxjava2:2.2.5"
     implementation "androidx.room:room-guava:2.2.5"
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 }

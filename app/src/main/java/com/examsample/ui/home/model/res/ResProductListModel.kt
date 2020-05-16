@@ -1,6 +1,6 @@
-package com.examsample.network.data.model.res
+package com.examsample.ui.home.model.res
 
-import com.examsample.network.data.model.ProductListModel
+import com.examsample.ui.home.model.ProductListModel
 import com.google.gson.annotations.SerializedName
 
 data class ResProductListModel(

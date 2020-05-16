@@ -1,11 +1,11 @@
-package com.examsample.network.data.model
+package com.examsample.ui.home.model
 
 import com.google.gson.annotations.SerializedName
 
 data class DescriptionModel(
 
     @SerializedName("imagePath")
-    val imagePath: Int,
+    val imagePath: String,
 
     @SerializedName("subject")
     val subject: String,

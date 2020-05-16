@@ -1,4 +1,4 @@
-package com.examsample.network.data.model
+package com.examsample.ui.home.model
 
 import com.google.gson.annotations.SerializedName
 
@@ -10,9 +10,14 @@ data class ProductModel(
     @SerializedName("name")
     val name: String,
 
+    @SerializedName("thumbnail")
+    val thumbnail: String,
+
     @SerializedName("description")
-    val description : DescriptionModel,
+    val description: DescriptionModel,
 
     @SerializedName("rate")
     val rate: Float
+
+
 )

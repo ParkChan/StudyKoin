@@ -1,8 +1,8 @@
-package com.examsample.network.data.source.remote
+package com.examsample.ui.home.remote
 
 import com.examsample.network.NETWORK_SUCCESS_CODE
 import com.examsample.network.api.GoodChoiceApi
-import com.examsample.network.data.model.res.ResProductListModel
+import com.examsample.ui.home.model.res.ResProductListModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -18,13 +18,9 @@ class SearchProductRemoteDataSource(
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe({
-            if (it.isSuccessful) {
-                val response = it.body()
-                if (it.isSuccessful && response != null && response.code == NETWORK_SUCCESS_CODE) {
-                    onSuccess(response)
-                } else {
-                    onFail(IllegalStateException("Please try again later").toString())
-                }
+            val response = it.body()
+            if (it.isSuccessful && response != null && response.code == NETWORK_SUCCESS_CODE) {
+                onSuccess(response)
             } else {
                 onFail(it.message())
             }
