@@ -12,4 +12,5 @@ data class DescriptionModel(
 
     @SerializedName("price")
     val price: String
+
 )

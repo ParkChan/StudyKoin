@@ -10,6 +10,7 @@ import com.examsample.common.BaseFragment
 import com.examsample.common.ListScrollEvent
 import com.examsample.databinding.FragmentHomeBinding
 import com.examsample.network.api.GoodChoiceApi
+import com.examsample.ui.home.adapter.ProductAdapter
 import com.examsample.ui.home.remote.SearchProductRemoteDataSource
 import com.examsample.ui.home.repository.GoodChoiceRepository
 import com.examsample.ui.home.viewmodel.HomeViewModel
@@ -24,7 +25,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvProductList.adapter = productAdapter
+        binding.rvProduct.adapter = productAdapter
 
         initViewModel()
         iniViewModelObserve()
@@ -46,7 +47,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     private fun iniViewModelObserve() {
         binding.homeViewModel?.productListData?.observe(viewLifecycleOwner, Observer {
-            Logger.d("homeViewModel observe productListData $it")
+            Logger.d("homeViewModel observe listData $it")
         })
         binding.homeViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
             Logger.d("homeViewModel observe errorMessage $it")
@@ -55,7 +56,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     private fun initRecyclerViewPageEvent() {
-        setRecyclerViewScrollListener(binding.rvProductList, object : ListScrollEvent {
+        setRecyclerViewScrollListener(binding.rvProduct, object : ListScrollEvent {
 
             override fun onScrolled(
                 visibleItemCount: Int,

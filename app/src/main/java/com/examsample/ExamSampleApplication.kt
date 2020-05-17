@@ -5,6 +5,7 @@ import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 
 class ExamSampleApplication: Application() {
+
     override fun onCreate() {
         super.onCreate()
         Logger.addLogAdapter(object : AndroidLogAdapter() {

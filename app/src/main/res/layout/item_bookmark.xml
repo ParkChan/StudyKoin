@@ -8,8 +8,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="productModel"
-            type="com.examsample.ui.home.model.ProductModel" />
+            name="bookmarkModel"
+            type="com.examsample.ui.bookmark.model.BookmarkModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            app:bindImage="@{productModel.thumbnail}"
+            app:bindImage="@{bookmarkModel.thumbnail}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:gravity="center|start"
-                android:text="@{productModel.name}"
+                android:text="@{bookmarkModel.name}"
                 android:textColor="@color/color_ffffff"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -54,7 +54,7 @@
                 android:id="@+id/rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rating="@{productModel.rate}"
+                android:rating="@{bookmarkModel.rate}"
                 android:theme="@style/CustomRatingBar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_name" />
@@ -63,9 +63,8 @@
                 android:id="@+id/tb_is_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                app:addBookMark="@{productModel}"
-                android:textOff="@string/bookmark_add"
-                android:textOn="@string/bookmark_complete"
+                android:textOff="@string/bookmark_delete"
+                android:textOn="@string/bookmark_delete"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

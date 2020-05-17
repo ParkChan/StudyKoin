@@ -12,12 +12,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvProductList"
-            app:listData="@{homeViewModel.productListData}"
+            android:id="@+id/rv_product"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scrollbars="vertical"
@@ -26,8 +24,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_product"
-            />
+            app:productListData="@{homeViewModel.productListData}"
+            tools:listitem="@layout/item_product" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

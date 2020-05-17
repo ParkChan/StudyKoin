@@ -9,7 +9,6 @@ import com.orhanobut.logger.Logger
 import io.reactivex.disposables.CompositeDisposable
 
 class GoodChoiceRepository(
-
     private val compositeDisposable: CompositeDisposable,
     private val searchProductRemoteDataSource: SearchProductRemoteDataSource
 ) {

@@ -1,31 +1,60 @@
 package com.examsample.ui.bookmark
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.examsample.ExamSampleApplication
 import com.examsample.R
+import com.examsample.common.BaseFragment
+import com.examsample.databinding.FragmentBookmarkBinding
+import com.examsample.ui.bookmark.adapter.BookmarkAdapter
+import com.examsample.ui.bookmark.viewmodel.BookmarkViewModel
+import com.orhanobut.logger.Logger
 
-class BookmarkFragment : Fragment() {
+class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
+    R.layout.fragment_bookmark
+) {
 
-    private lateinit var dashboardViewModel: BookmarkViewModel
+    private val bookmarkAdapter = BookmarkAdapter()
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(BookmarkViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_bookmark, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.rvBookmark.adapter = bookmarkAdapter
+
+        initViewModel()
+        iniViewModelObserve()
+
+        selectAllBookmarkList()
     }
+
+    private fun initViewModel() {
+
+        binding.bookmarkViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return BookmarkViewModel(context?.applicationContext as ExamSampleApplication) as T
+            }
+        }).get(BookmarkViewModel::class.java)
+
+    }
+
+    private fun iniViewModelObserve() {
+        binding.bookmarkViewModel?.bookmarkListData?.observe(viewLifecycleOwner, Observer {
+            Logger.d("bookmarkViewModel observe listData $it")
+        })
+        binding.bookmarkViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
+            Logger.d("bookmarkViewModel observe errorMessage $it")
+            showToast(getString(R.string.common_toast_msg_network_error))
+        })
+
+    }
+
+    private fun selectAllBookmarkList(){
+        binding.bookmarkViewModel?.let {
+            compositeDisposable.add(it.selectAll())
+        }
+    }
+
 }

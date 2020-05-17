@@ -1,4 +1,4 @@
-package com.examsample.ui.home
+package com.examsample.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -22,19 +22,22 @@ class ProductAdapter : ListAdapter<ProductModel, RecyclerView.ViewHolder>(REPO_C
             parent,
             false
         )
-        return RepoViewHolder(binding, binding.root)
+        return CustomViewHolder(
+            binding,
+            binding.root
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val repoItem = getItem(position)
-        repoItem.also {
-            Logger.d("position $position data >>> $repoItem")
+        val productModel = getItem(position)
+        productModel.also {
+            Logger.d("position $position data >>> $productModel")
         }?.let {
-            (holder as RepoViewHolder).bind(it)
+            (holder as CustomViewHolder).bind(it)
         }
     }
 
-    class RepoViewHolder(private val binding: ItemProductBinding, view: View) :
+    class CustomViewHolder(private val binding: ItemProductBinding, view: View) :
         RecyclerView.ViewHolder(view) {
 
         init {
