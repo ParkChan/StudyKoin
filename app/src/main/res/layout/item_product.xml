@@ -41,6 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:gravity="center|start"
+                android:singleLine="true"
                 android:text="@{productModel.name}"
                 android:textColor="@color/color_ffffff"
                 android:textSize="16sp"
@@ -63,9 +64,9 @@
                 android:id="@+id/tb_is_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                app:addBookMark="@{productModel}"
                 android:textOff="@string/bookmark_add"
                 android:textOn="@string/bookmark_complete"
+                app:addBookMark="@{productModel}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
