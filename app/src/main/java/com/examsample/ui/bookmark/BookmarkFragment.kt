@@ -33,11 +33,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
             }
         }).get(BookmarkViewModel::class.java)
 
-        binding.rvBookmark.adapter = BookmarkAdapter(ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return BookmarkViewModel(context?.applicationContext as ExamSampleApplication) as T
-            }
-        }).get(BookmarkViewModel::class.java))
+        binding.rvBookmark.adapter = BookmarkAdapter(binding.bookmarkViewModel as BookmarkViewModel)
     }
 
     private fun iniViewModelObserve() {
