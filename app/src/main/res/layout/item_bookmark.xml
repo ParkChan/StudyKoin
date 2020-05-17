@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="bookmarkViewModel"
+            type="com.examsample.ui.bookmark.viewmodel.BookmarkViewModel" />
+
+        <variable
             name="bookmarkModel"
             type="com.examsample.ui.bookmark.model.BookmarkModel" />
     </data>
@@ -63,8 +67,9 @@
                 android:id="@+id/tb_is_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:onClick="@{() -> bookmarkViewModel.sendRemoveBookmarkData(bookmarkModel)}"
                 android:textOff="@string/bookmark_delete"
-                android:textOn="@string/bookmark_delete"
+                android:textOn="@string/bookmark_delete_complete"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

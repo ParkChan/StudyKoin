@@ -25,7 +25,7 @@ abstract class BookmarkDatabase : RoomDatabase() {
             if (instance == null) {
                 synchronized(this) {
                     instance = Room.databaseBuilder(
-                        context.applicationContext,
+                        context,
                         BookmarkDatabase::class.java, TABLE_NAME_BOOK_MARK
                     ).build()
                 }

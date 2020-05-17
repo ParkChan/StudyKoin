@@ -11,9 +11,12 @@ import com.examsample.BR
 import com.examsample.R
 import com.examsample.databinding.ItemBookmarkBinding
 import com.examsample.ui.bookmark.model.BookmarkModel
+import com.examsample.ui.bookmark.viewmodel.BookmarkViewModel
 import com.orhanobut.logger.Logger
 
-class BookmarkAdapter : ListAdapter<BookmarkModel, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
+class BookmarkAdapter(
+    private val bookmarkViewModel: BookmarkViewModel
+): ListAdapter<BookmarkModel, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemBookmarkBinding = DataBindingUtil.inflate(
@@ -24,11 +27,13 @@ class BookmarkAdapter : ListAdapter<BookmarkModel, RecyclerView.ViewHolder>(REPO
         )
         return CustomViewHolder(
             binding,
-            binding.root
+            binding.root,
+            bookmarkViewModel
         )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         val bookmarkModel = getItem(position)
         bookmarkModel.also {
             Logger.d("position $position data >>> $bookmarkModel")
@@ -37,18 +42,12 @@ class BookmarkAdapter : ListAdapter<BookmarkModel, RecyclerView.ViewHolder>(REPO
         }
     }
 
-    class CustomViewHolder(private val binding: ItemBookmarkBinding, view: View) :
+    class CustomViewHolder(private val binding: ItemBookmarkBinding, view: View, bookmarkViewModel: BookmarkViewModel) :
         RecyclerView.ViewHolder(view) {
 
         init {
-//        view.setOnClickListener {
-//            repo?.url?.let { url ->
-//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-//                view.context.startActivity(intent)
-//            }
-//        }
+            binding.bookmarkViewModel = bookmarkViewModel
         }
-
         fun bind(repo: BookmarkModel) {
             binding.setVariable(BR.bookmarkModel, repo)
         }
@@ -59,7 +58,10 @@ class BookmarkAdapter : ListAdapter<BookmarkModel, RecyclerView.ViewHolder>(REPO
             override fun areItemsTheSame(oldItem: BookmarkModel, newItem: BookmarkModel): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: BookmarkModel, newItem: BookmarkModel): Boolean =
+            override fun areContentsTheSame(
+                oldItem: BookmarkModel,
+                newItem: BookmarkModel
+            ): Boolean =
                 oldItem == newItem
         }
     }

@@ -35,20 +35,9 @@ fun addBookMark(view: View, model: ProductModel) {
         regTimeStamp = System.currentTimeMillis()
     )
     view.setOnClickListener {
-        Toast.makeText(view.context, "${model.name} add favorite!!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(view.context, "${model.name} add Bookmark!!", Toast.LENGTH_SHORT).show()
         CoroutineScope(Dispatchers.IO).launch {
             view.context?.let { BookmarkDatabase.getInstance(it).bookmarkDao().insert(bookmarkModel) }
-        }
-    }
-}
-
-@BindingAdapter("deleteBookMark")
-fun deleteBookMark(view: View, model: BookmarkModel) {
-    view.setOnClickListener {
-        Toast.makeText(view.context, "${model.name} delete favorite!!", Toast.LENGTH_SHORT)
-            .show()
-        CoroutineScope(Dispatchers.IO).launch {
-            BookmarkDatabase.getInstance(view.context).bookmarkDao().delete(model)
         }
     }
 }

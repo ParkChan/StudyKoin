@@ -17,16 +17,11 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     R.layout.fragment_bookmark
 ) {
 
-    private val bookmarkAdapter = BookmarkAdapter()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvBookmark.adapter = bookmarkAdapter
-
         initViewModel()
         iniViewModelObserve()
-
         selectAllBookmarkList()
     }
 
@@ -38,6 +33,11 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
             }
         }).get(BookmarkViewModel::class.java)
 
+        binding.rvBookmark.adapter = BookmarkAdapter(ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return BookmarkViewModel(context?.applicationContext as ExamSampleApplication) as T
+            }
+        }).get(BookmarkViewModel::class.java))
     }
 
     private fun iniViewModelObserve() {
@@ -47,6 +47,12 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         binding.bookmarkViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
             Logger.d("bookmarkViewModel observe errorMessage $it")
             showToast(getString(R.string.common_toast_msg_network_error))
+        })
+
+        //즐겨찾기 삭제
+        binding.bookmarkViewModel?.removeBookmarkModel?.observe(viewLifecycleOwner, Observer {
+            Logger.d("bookmarkViewModel observe removeData $it")
+            binding.bookmarkViewModel?.removeBookmark(context, it)
         })
 
     }
