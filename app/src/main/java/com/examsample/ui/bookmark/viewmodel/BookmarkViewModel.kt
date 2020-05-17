@@ -1,15 +1,12 @@
 package com.examsample.ui.bookmark.viewmodel
 
 import android.content.Context
-import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.examsample.ExamSampleApplication
 import com.examsample.ui.bookmark.local.BookmarkDatabase
 import com.examsample.ui.bookmark.model.BookmarkModel
-import com.orhanobut.logger.Logger
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
