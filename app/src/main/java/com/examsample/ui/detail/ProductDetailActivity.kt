@@ -33,6 +33,7 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
         initViewModel()
         iniViewModelObserve()
         initLayoutComponent(productModel)
+
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -54,7 +55,7 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
         })
     }
 
-    private fun initLayoutComponent(productModel: ProductModel){
+    private fun initLayoutComponent(productModel: ProductModel) {
         binding.productDetailViewModel?.let {
             compositeDisposable.add(
                 it.selectDBProductExists(
@@ -67,7 +68,12 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
     override fun onBackPressed() {
         setResult(
             Activity.RESULT_OK,
-            Intent().apply { putExtra(EXTRA_RESULT_PRODUCT_DETAIL_KEY, "상세화면이 닫혔음") })
+            Intent().apply {
+                putExtra(
+                    EXTRA_RESULT_PRODUCT_DETAIL_KEY,
+                    Gson().toJson(binding.productModel)
+                )
+            })
         finish()
     }
 }

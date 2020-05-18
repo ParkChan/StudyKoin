@@ -14,20 +14,24 @@ import com.examsample.network.api.GoodChoiceApi
 import com.examsample.ui.bookmark.repository.BookMarkRepository
 import com.examsample.ui.detail.ProductDetailActivityContract
 import com.examsample.ui.home.adapter.ProductAdapter
+import com.examsample.ui.home.model.ProductModel
 import com.examsample.ui.home.remote.SearchProductRemoteDataSource
 import com.examsample.ui.home.repository.GoodChoiceRepository
 import com.examsample.ui.home.viewmodel.HomeViewModel
+import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
     R.layout.fragment_home
 ) {
-
+    private var productList = emptyList<ProductModel>()
     private val activityResultLauncher: ActivityResultLauncher<String> = registerForActivityResult(
         ProductDetailActivityContract()
     ) { result: String? ->
         result?.let {
-            binding.rvProduct.adapter?.notifyDataSetChanged()
+            val productModel = Gson().fromJson(it, ProductModel::class.java)
+            val index = productList.indexOf(productModel)
+            binding.rvProduct.adapter?.notifyItemChanged(index)
         }
     }
 
@@ -61,6 +65,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     private fun iniViewModelObserve() {
         binding.homeViewModel?.productListData?.observe(viewLifecycleOwner, Observer {
             Logger.d("homeViewModel observe listData $it")
+            productList = it
         })
         binding.homeViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
             Logger.d("homeViewModel observe errorMessage $it")
