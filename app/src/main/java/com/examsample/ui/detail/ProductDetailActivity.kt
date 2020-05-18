@@ -10,6 +10,7 @@ import com.examsample.BR
 import com.examsample.R
 import com.examsample.common.BaseActivity
 import com.examsample.databinding.ActivityProductDetailBinding
+import com.examsample.ui.bookmark.repository.BookMarkRepository
 import com.examsample.ui.detail.ProductDetailActivityContract.Companion.EXTRA_INPUT_PRODUCT_DETAIL_KEY
 import com.examsample.ui.detail.ProductDetailActivityContract.Companion.EXTRA_RESULT_PRODUCT_DETAIL_KEY
 import com.examsample.ui.home.model.ProductModel
@@ -31,16 +32,7 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
 
         initViewModel()
         iniViewModelObserve()
-        initLayoutComponent()
-
-        binding.productDetailViewModel?.let {
-            compositeDisposable.add(
-                it.selectDBProductExists(
-                    this, productModel.id
-                )
-            )
-        }
-
+        initLayoutComponent(productModel)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -49,7 +41,7 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
         binding.productDetailViewModel =
             ViewModelProvider(this, object : ViewModelProvider.Factory {
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    return ProductDetailViewModel() as T
+                    return ProductDetailViewModel(BookMarkRepository()) as T
                 }
             }).get(ProductDetailViewModel::class.java)
 
@@ -62,10 +54,15 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
         })
     }
 
-    private fun initLayoutComponent() {
-
+    private fun initLayoutComponent(productModel: ProductModel){
+        binding.productDetailViewModel?.let {
+            compositeDisposable.add(
+                it.selectDBProductExists(
+                    this, productModel.id
+                )
+            )
+        }
     }
-
 
     override fun onBackPressed() {
         setResult(

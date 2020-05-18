@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.examsample.ui.bookmark.TABLE_NAME_BOOK_MARK
 import com.examsample.ui.bookmark.model.BookmarkModel
 
 @Database(
@@ -26,7 +25,7 @@ abstract class BookmarkDatabase : RoomDatabase() {
                 synchronized(this) {
                     instance = Room.databaseBuilder(
                         context,
-                        BookmarkDatabase::class.java, TABLE_NAME_BOOK_MARK
+                        BookmarkDatabase::class.java, "BOOK_MARK_TABLE"
                     ).build()
                 }
             }

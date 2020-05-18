@@ -69,7 +69,8 @@
 
             <ToggleButton
                 android:id="@+id/tb_is_bookmark"
-                addBookMark="@{productModel}"
+                bookmarkListener="@{homeViewModel}"
+                productModel="@{productModel}"
                 android:layout_width="44dp"
                 android:layout_height="36dp"
                 android:background="@drawable/selector_check_bookmark_toggle"

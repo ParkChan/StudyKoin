@@ -4,12 +4,16 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.examsample.ui.bookmark.local.BookmarkDatabase
+import com.examsample.ui.bookmark.model.BookmarkModel
+import com.examsample.ui.bookmark.repository.BookMarkRepository
 import com.orhanobut.logger.Logger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class ProductDetailViewModel : ViewModel() {
+class ProductDetailViewModel(
+    private val bookMarkRepository: BookMarkRepository
+) : ViewModel() {
 
     private val _exists = MutableLiveData<Boolean>()
     val exists = _exists
@@ -27,4 +31,12 @@ class ProductDetailViewModel : ViewModel() {
             }, { error ->
                 Logger.d("selectDBProductExists error Log >>> $error")
             })
+
+    fun deleteBookMark(context: Context, model: BookmarkModel) {
+        bookMarkRepository.deleteBookMark(context, model)
+    }
+
+    fun insertBookMark(context: Context, model: BookmarkModel) {
+        bookMarkRepository.insertBookMark(context, model)
+    }
 }

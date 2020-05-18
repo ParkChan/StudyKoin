@@ -10,6 +10,7 @@ import com.examsample.R
 import com.examsample.common.BaseFragment
 import com.examsample.databinding.FragmentBookmarkBinding
 import com.examsample.ui.bookmark.adapter.BookmarkAdapter
+import com.examsample.ui.bookmark.repository.BookMarkRepository
 import com.examsample.ui.bookmark.viewmodel.BookmarkViewModel
 import com.examsample.ui.detail.ProductDetailActivityContract
 import com.orhanobut.logger.Logger
@@ -22,6 +23,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     ) { result: String? ->
         result?.let {
             Logger.d("activity result >>> $it")
+            selectAllBookmarkList()
         }
     }
 
@@ -36,11 +38,11 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
 
     @Suppress("UNCHECKED_CAST")
     private fun initViewModel() {
-
         binding.bookmarkViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return context?.let {
                     BookmarkViewModel(
+                        BookMarkRepository(),
                         activityResultLauncher,
                         it
                     )
@@ -70,10 +72,17 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         })
 
         //즐겨찾기 삭제
-        binding.bookmarkViewModel?.removeBookmarkModel?.observe(viewLifecycleOwner, Observer {
-            Logger.d("bookmarkViewModel observe removeData $it")
-            binding.bookmarkViewModel?.removeBookmark(context, it)
-        })
+        binding.bookmarkViewModel?.removeBookmarkModel?.observe(
+            viewLifecycleOwner,
+            Observer { bookmarkModel ->
+                Logger.d("bookmarkViewModel observe removeData $bookmarkModel")
+                context?.let { context ->
+                    binding.bookmarkViewModel?.removeBookmark(
+                        context,
+                        bookmarkModel
+                    )
+                }
+            })
 
     }
 

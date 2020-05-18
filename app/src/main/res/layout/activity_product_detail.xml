@@ -54,7 +54,8 @@
             android:background="@drawable/selector_check_bookmark_toggle"
             android:textOff="@null"
             android:textOn="@null"
-            app:addBookMark="@{productModel}"
+            app:bookmarkListener="@{productDetailViewModel}"
+            app:productModel="@{productModel}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

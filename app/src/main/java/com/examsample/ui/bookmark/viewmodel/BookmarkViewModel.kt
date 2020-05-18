@@ -7,16 +7,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.examsample.ui.bookmark.local.BookmarkDatabase
 import com.examsample.ui.bookmark.model.BookmarkModel
+import com.examsample.ui.bookmark.repository.BookMarkRepository
 import com.examsample.ui.home.model.DescriptionModel
 import com.examsample.ui.home.model.ProductModel
 import com.google.gson.Gson
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class BookmarkViewModel(
+    private val bookMarkRepository: BookMarkRepository,
     private val activityResultLauncher: ActivityResultLauncher<String>,
     context: Context
 ) : ViewModel() {
@@ -44,13 +43,9 @@ class BookmarkViewModel(
         _removeBookmarkModel.postValue(model)
     }
 
-    fun removeBookmark(context: Context?, model: BookmarkModel){
-        context?.let {
-            CoroutineScope(Dispatchers.IO).launch {
-                BookmarkDatabase.getInstance(context).bookmarkDao().delete(model)
-                selectAll()
-            }
-        }
+    fun removeBookmark(context: Context, model: BookmarkModel){
+        bookMarkRepository.deleteBookMark(context, model)
+        selectAll()
     }
 
     //상품 상세화면으로 이동

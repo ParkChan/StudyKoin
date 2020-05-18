@@ -48,8 +48,8 @@ class BookmarkAdapter(
         init {
             binding.bookmarkViewModel = bookmarkViewModel
         }
-        fun bind(repo: BookmarkModel) {
-            binding.setVariable(BR.bookmarkModel, repo)
+        fun bind(model: BookmarkModel) {
+            binding.setVariable(BR.bookmarkModel, model)
         }
     }
 

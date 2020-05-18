@@ -11,6 +11,7 @@ import com.examsample.common.BaseFragment
 import com.examsample.common.ListScrollEvent
 import com.examsample.databinding.FragmentHomeBinding
 import com.examsample.network.api.GoodChoiceApi
+import com.examsample.ui.bookmark.repository.BookMarkRepository
 import com.examsample.ui.detail.ProductDetailActivityContract
 import com.examsample.ui.home.adapter.ProductAdapter
 import com.examsample.ui.home.remote.SearchProductRemoteDataSource
@@ -26,7 +27,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         ProductDetailActivityContract()
     ) { result: String? ->
         result?.let {
-            Logger.d("activity result >>> $it")
+            binding.rvProduct.adapter?.notifyDataSetChanged()
         }
     }
 
@@ -43,11 +44,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         binding.homeViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return HomeViewModel(
+                    compositeDisposable,
                     activityResultLauncher,
                     GoodChoiceRepository(
                         compositeDisposable,
                         SearchProductRemoteDataSource(GoodChoiceApi.create())
-                    )
+                    ),
+                    BookMarkRepository()
                 ) as T
             }
         }).get(HomeViewModel::class.java)

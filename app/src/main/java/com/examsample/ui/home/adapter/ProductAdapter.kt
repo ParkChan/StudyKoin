@@ -41,15 +41,20 @@ class ProductAdapter(
         }
     }
 
-    class CustomViewHolder(private val binding: ItemProductBinding, view: View, viewModel: HomeViewModel) :
+    class CustomViewHolder(
+        private val binding: ItemProductBinding,
+        view: View,
+        viewModel: HomeViewModel
+    ) :
         RecyclerView.ViewHolder(view) {
 
         init {
             binding.homeViewModel = viewModel
         }
 
-        fun bind(repo: ProductModel) {
-            binding.setVariable(BR.productModel, repo)
+        fun bind(model: ProductModel) {
+            binding.setVariable(BR.productModel, model)
+            binding.homeViewModel?.isBookMark(binding.tbIsBookmark, model.id)
         }
     }
 
