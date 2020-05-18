@@ -22,10 +22,11 @@
 
         <ImageView
             android:id="@+id/iv_thumbnail"
+            bindImage="@{bookmarkModel.thumbnail}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            bindImage="@{bookmarkModel.thumbnail}"
+            android:onClick="@{() -> bookmarkViewModel.startProductDetailActivity(bookmarkModel)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -68,13 +69,13 @@
 
             <TextView
                 android:id="@+id/tv_date"
+                dateTime="@{bookmarkModel.regTimeStamp}"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:gravity="center|start"
                 android:textColor="@color/color_ffffff"
                 android:textSize="@dimen/common_text_size"
                 android:textStyle="bold"
-                dateTime="@{bookmarkModel.regTimeStamp}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rating"
@@ -85,10 +86,10 @@
                 android:layout_width="44dp"
                 android:layout_height="36dp"
                 android:background="@drawable/bookmark_p"
+                android:checked="true"
                 android:onClick="@{() -> bookmarkViewModel.sendRemoveBookmarkData(bookmarkModel)}"
                 android:textOff="@null"
                 android:textOn="@null"
-                android:checked="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

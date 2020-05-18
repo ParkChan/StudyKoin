@@ -20,7 +20,7 @@ abstract class BaseFragment<VDB : ViewDataBinding>(
 ) : Fragment() {
 
     protected lateinit var binding: VDB
-    protected var compositeDisposable: CompositeDisposable = CompositeDisposable();
+    protected var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,

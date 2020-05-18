@@ -1,4 +1,4 @@
-package com.examsample.ui
+package com.examsample.ui.detail
 
 import android.app.Activity
 import android.content.Context

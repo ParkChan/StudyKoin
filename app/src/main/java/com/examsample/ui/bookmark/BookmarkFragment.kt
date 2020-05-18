@@ -2,34 +2,49 @@ package com.examsample.ui.bookmark
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.examsample.ExamSampleApplication
 import com.examsample.R
 import com.examsample.common.BaseFragment
 import com.examsample.databinding.FragmentBookmarkBinding
 import com.examsample.ui.bookmark.adapter.BookmarkAdapter
 import com.examsample.ui.bookmark.viewmodel.BookmarkViewModel
+import com.examsample.ui.detail.ProductDetailActivityContract
 import com.orhanobut.logger.Logger
 
 class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     R.layout.fragment_bookmark
 ) {
+    private val activityResultLauncher: ActivityResultLauncher<String> = registerForActivityResult(
+        ProductDetailActivityContract()
+    ) { result: String? ->
+        result?.let {
+            Logger.d("activity result >>> $it")
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initViewModel()
         iniViewModelObserve()
+        initLayout()
         selectAllBookmarkList()
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun initViewModel() {
 
         binding.bookmarkViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return BookmarkViewModel(context?.applicationContext as ExamSampleApplication) as T
+                return context?.let {
+                    BookmarkViewModel(
+                        activityResultLauncher,
+                        it
+                    )
+                } as T
             }
         }).get(BookmarkViewModel::class.java)
 
@@ -39,6 +54,15 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     private fun iniViewModelObserve() {
         binding.bookmarkViewModel?.bookmarkListData?.observe(viewLifecycleOwner, Observer {
             Logger.d("bookmarkViewModel observe listData $it")
+            if (it.isNotEmpty()) {
+                binding.rvBookmark.visibility = View.VISIBLE
+                binding.tvEmptyList.visibility = View.GONE
+
+            } else {
+                binding.rvBookmark.visibility = View.GONE
+                binding.tvEmptyList.visibility = View.VISIBLE
+            }
+
         })
         binding.bookmarkViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
             Logger.d("bookmarkViewModel observe errorMessage $it")
@@ -53,7 +77,11 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
 
     }
 
-    private fun selectAllBookmarkList(){
+    private fun initLayout() {
+        binding.tvEmptyList.visibility = View.GONE
+    }
+
+    private fun selectAllBookmarkList() {
         binding.bookmarkViewModel?.let {
             compositeDisposable.add(it.selectAll())
         }

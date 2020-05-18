@@ -1,12 +1,15 @@
 package com.examsample.ui.bookmark.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
+import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.examsample.ExamSampleApplication
+import androidx.lifecycle.ViewModel
 import com.examsample.ui.bookmark.local.BookmarkDatabase
 import com.examsample.ui.bookmark.model.BookmarkModel
+import com.examsample.ui.home.model.DescriptionModel
+import com.examsample.ui.home.model.ProductModel
+import com.google.gson.Gson
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
@@ -14,10 +17,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class BookmarkViewModel(
-    application: ExamSampleApplication
-) : AndroidViewModel(application) {
+    private val activityResultLauncher: ActivityResultLauncher<String>,
+    context: Context
+) : ViewModel() {
 
-    private val bookmarkDatabase: BookmarkDatabase = BookmarkDatabase.getInstance(application)
+    private val bookmarkDatabase: BookmarkDatabase = BookmarkDatabase.getInstance(context)
 
     private var _bookmarkListData = MutableLiveData<List<BookmarkModel>>()
     var bookmarkListData: LiveData<List<BookmarkModel>> = _bookmarkListData
@@ -46,6 +50,23 @@ class BookmarkViewModel(
                 BookmarkDatabase.getInstance(context).bookmarkDao().delete(model)
                 selectAll()
             }
+        }
+    }
+
+    //상품 상세화면으로 이동
+    fun startProductDetailActivity(model: BookmarkModel) {
+        ProductModel(
+            id = model.id,
+            name = model.name,
+            thumbnail = model.thumbnail,
+            descriptionModel = DescriptionModel(
+                imagePath = model.imagePath,
+                subject = model.subject,
+                price = model.price
+            ),
+            rate = model.rate
+        ).run {
+            activityResultLauncher.launch(Gson().toJson(this))
         }
     }
 }

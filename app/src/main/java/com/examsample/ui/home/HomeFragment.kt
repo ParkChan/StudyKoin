@@ -11,7 +11,7 @@ import com.examsample.common.BaseFragment
 import com.examsample.common.ListScrollEvent
 import com.examsample.databinding.FragmentHomeBinding
 import com.examsample.network.api.GoodChoiceApi
-import com.examsample.ui.ProductDetailActivityContract
+import com.examsample.ui.detail.ProductDetailActivityContract
 import com.examsample.ui.home.adapter.ProductAdapter
 import com.examsample.ui.home.remote.SearchProductRemoteDataSource
 import com.examsample.ui.home.repository.GoodChoiceRepository
@@ -38,6 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         initRecyclerViewPageEvent()
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun initViewModel() {
         binding.homeViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
