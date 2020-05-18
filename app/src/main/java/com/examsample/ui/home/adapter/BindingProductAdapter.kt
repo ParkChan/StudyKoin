@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 
 @BindingAdapter("productListData")
-fun setProductListData(recyclerView: RecyclerView, items: List<ProductModel>?) {
+fun productListData(recyclerView: RecyclerView, items: List<ProductModel>?) {
     items?.let{
         if (recyclerView.adapter is ProductAdapter) {
             (recyclerView.adapter as ProductAdapter).submitList(it)

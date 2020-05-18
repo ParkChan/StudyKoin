@@ -11,9 +11,12 @@ import com.examsample.BR
 import com.examsample.R
 import com.examsample.databinding.ItemProductBinding
 import com.examsample.ui.home.model.ProductModel
+import com.examsample.ui.home.viewmodel.HomeViewModel
 import com.orhanobut.logger.Logger
 
-class ProductAdapter : ListAdapter<ProductModel, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
+class ProductAdapter(
+    private val homeViewModel: HomeViewModel
+) : ListAdapter<ProductModel, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemProductBinding = DataBindingUtil.inflate(
@@ -24,7 +27,8 @@ class ProductAdapter : ListAdapter<ProductModel, RecyclerView.ViewHolder>(REPO_C
         )
         return CustomViewHolder(
             binding,
-            binding.root
+            binding.root,
+            homeViewModel
         )
     }
 
@@ -37,16 +41,11 @@ class ProductAdapter : ListAdapter<ProductModel, RecyclerView.ViewHolder>(REPO_C
         }
     }
 
-    class CustomViewHolder(private val binding: ItemProductBinding, view: View) :
+    class CustomViewHolder(private val binding: ItemProductBinding, view: View, viewModel: HomeViewModel) :
         RecyclerView.ViewHolder(view) {
 
         init {
-//        view.setOnClickListener {
-//            repo?.url?.let { url ->
-//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-//                view.context.startActivity(intent)
-//            }
-//        }
+            binding.homeViewModel = viewModel
         }
 
         fun bind(repo: ProductModel) {

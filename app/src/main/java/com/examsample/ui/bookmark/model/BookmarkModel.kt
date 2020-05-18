@@ -23,7 +23,7 @@ data class BookmarkModel(
     val subject: String,
 
     @field:SerializedName("price")
-    val price: String,
+    val price: Int,
 
     @field:SerializedName("rate")
     val rate: Float,

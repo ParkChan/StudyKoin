@@ -2,12 +2,14 @@ package com.examsample.common
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import java.text.DecimalFormat
 
 
 @BindingAdapter("visibility")
-fun setVisibility(view: View, text: String?) {
+fun visibility(view: View, text: String?) {
     if (text.isNullOrEmpty()) {
         view.visibility = View.GONE
     } else {
@@ -16,7 +18,7 @@ fun setVisibility(view: View, text: String?) {
 }
 
 @BindingAdapter("bindImage")
-fun setProductImage(
+fun bindImage(
     view: ImageView,
     imgUrl: String
 ) {
@@ -25,3 +27,14 @@ fun setProductImage(
         .thumbnail(1.0f)
         .into(view)
 }
+
+@BindingAdapter("textWon")
+fun textWon(
+    textView: TextView,
+    price: Int
+) {
+    val formatter = DecimalFormat("###,###.##원")
+    textView.text = formatter.format(price)
+
+}
+

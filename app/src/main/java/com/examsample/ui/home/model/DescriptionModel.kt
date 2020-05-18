@@ -11,6 +11,6 @@ data class DescriptionModel(
     val subject: String,
 
     @SerializedName("price")
-    val price: String
+    val price: Int
 
 )

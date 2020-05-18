@@ -2,6 +2,7 @@ package com.examsample.ui.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,6 +11,7 @@ import com.examsample.common.BaseFragment
 import com.examsample.common.ListScrollEvent
 import com.examsample.databinding.FragmentHomeBinding
 import com.examsample.network.api.GoodChoiceApi
+import com.examsample.ui.ProductDetailActivityContract
 import com.examsample.ui.home.adapter.ProductAdapter
 import com.examsample.ui.home.remote.SearchProductRemoteDataSource
 import com.examsample.ui.home.repository.GoodChoiceRepository
@@ -20,12 +22,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     R.layout.fragment_home
 ) {
 
-    private val productAdapter = ProductAdapter()
+    private val activityResultLauncher: ActivityResultLauncher<String> = registerForActivityResult(
+        ProductDetailActivityContract()
+    ) { result: String? ->
+        result?.let {
+            Logger.d("activity result >>> $it")
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.rvProduct.adapter = productAdapter
 
         initViewModel()
         iniViewModelObserve()
@@ -36,6 +42,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         binding.homeViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return HomeViewModel(
+                    activityResultLauncher,
                     GoodChoiceRepository(
                         compositeDisposable,
                         SearchProductRemoteDataSource(GoodChoiceApi.create())
@@ -43,6 +50,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 ) as T
             }
         }).get(HomeViewModel::class.java)
+
+        binding.rvProduct.adapter = ProductAdapter(binding.homeViewModel as HomeViewModel)
     }
 
     private fun iniViewModelObserve() {

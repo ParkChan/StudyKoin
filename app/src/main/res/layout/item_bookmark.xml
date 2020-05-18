@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            app:bindImage="@{bookmarkModel.thumbnail}"
+            bindImage="@{bookmarkModel.thumbnail}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +33,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="wrap_content"
             android:background="#20000000"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="@id/iv_thumbnail"
@@ -48,7 +48,7 @@
                 android:singleLine="true"
                 android:text="@{bookmarkModel.name}"
                 android:textColor="@color/color_ffffff"
-                android:textSize="16sp"
+                android:textSize="@dimen/common_text_size"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -57,12 +57,14 @@
 
             <RatingBar
                 android:id="@+id/rating"
+                style="@style/CustomRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:max="5"
                 android:rating="@{bookmarkModel.rate}"
-                android:theme="@style/CustomRatingBar"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_name" />
+                app:layout_constraintTop_toBottomOf="@id/tv_name"
+                tools:rating="3" />
 
             <TextView
                 android:id="@+id/tv_date"
@@ -70,20 +72,23 @@
                 android:layout_height="30dp"
                 android:gravity="center|start"
                 android:textColor="@color/color_ffffff"
-                android:textSize="16sp"
+                android:textSize="@dimen/common_text_size"
                 android:textStyle="bold"
-                app:dateTime="@{bookmarkModel.regTimeStamp}"
+                dateTime="@{bookmarkModel.regTimeStamp}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rating"
                 tools:text="등록일 2020-05-18" />
 
             <ToggleButton
-                android:id="@+id/tb_is_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:id="@+id/tb_is_bookmark"
+                android:layout_width="44dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bookmark_p"
                 android:onClick="@{() -> bookmarkViewModel.sendRemoveBookmarkData(bookmarkModel)}"
-                android:textOff="@string/bookmark_delete"
-                android:textOn="@string/bookmark_delete_complete"
+                android:textOff="@null"
+                android:textOn="@null"
+                android:checked="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
