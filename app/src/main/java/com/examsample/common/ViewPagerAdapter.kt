@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class ViewPagerAdapter(
-    private val list: List<Fragment>,
+    val list: List<Fragment>,
     activity: FragmentActivity
 ) : FragmentStateAdapter(activity) {
 

@@ -139,4 +139,8 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         }
     }
 
+    fun listUpdate(){
+        binding.bookmarkViewModel?.lastRequestSortType?.let { selectAllBookmarkList(it)}
+    }
+
 }
