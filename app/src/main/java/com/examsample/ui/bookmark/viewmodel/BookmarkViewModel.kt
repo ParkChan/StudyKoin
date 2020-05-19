@@ -11,6 +11,7 @@ import com.examsample.ui.bookmark.repository.BookMarkRepository
 import com.examsample.ui.home.model.DescriptionModel
 import com.examsample.ui.home.model.ProductModel
 import com.google.gson.Gson
+import com.orhanobut.logger.Logger
 import io.reactivex.disposables.Disposable
 
 class BookmarkViewModel(
@@ -26,6 +27,10 @@ class BookmarkViewModel(
 
     private val _removeBookmarkModel = MutableLiveData<BookmarkModel>()
     var removeBookmarkModel: LiveData<BookmarkModel> = _removeBookmarkModel
+
+    private val _existsProductModel = MutableLiveData<ProductModel>()
+    val existsProductModel = _existsProductModel
+
 
     //정렬 타입
     private val _sortType = MutableLiveData<BookMarkSortType>().apply {
@@ -71,4 +76,19 @@ class BookmarkViewModel(
             activityResultLauncher.launch(Gson().toJson(this))
         }
     }
+
+    fun selectDBProductExists(context: Context, productModel: ProductModel): Disposable =
+        bookMarkRepository.selectDBProductExists(
+            context,
+            productModel,
+            result = { exists, model ->
+                Logger.d("selectDBProductExists removeData $exists")
+                if(!exists){
+                    _existsProductModel.value = model
+                }
+            },
+            onFail = {
+                Logger.d("selectDBProductExists error Log >>> $it")
+            }
+        )
 }

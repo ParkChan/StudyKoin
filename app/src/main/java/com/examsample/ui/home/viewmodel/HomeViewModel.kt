@@ -62,7 +62,6 @@ class HomeViewModel(
     }
 
     fun isBookMark(toggleButton: ToggleButton, productId: String){
-
         compositeDisposable.add(BookmarkDatabase.getInstance(toggleButton.context)
             .bookmarkDao().selectProductExists(productId)
             .subscribeOn(Schedulers.io())

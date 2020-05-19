@@ -90,7 +90,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         })
     }
 
-    fun listUpdate(){
-        
+    fun listUpdate(productModel: ProductModel){
+        val index = productList.indexOf(productModel)
+        binding.rvProduct.adapter?.notifyItemChanged(index)
     }
 }

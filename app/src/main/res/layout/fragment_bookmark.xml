@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="bookmarkEventViewModel"
+            type="com.examsample.common.viewmodel.BookmarkEventViewModel" />
+
+        <variable
             name="bookmarkViewModel"
             type="com.examsample.ui.bookmark.viewmodel.BookmarkViewModel" />
     </data>

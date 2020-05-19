@@ -9,11 +9,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.examsample.R
 import com.examsample.common.BaseFragment
+import com.examsample.common.viewmodel.BookmarkEventViewModel
 import com.examsample.databinding.FragmentBookmarkBinding
 import com.examsample.ui.bookmark.adapter.BookmarkAdapter
 import com.examsample.ui.bookmark.repository.BookMarkRepository
 import com.examsample.ui.bookmark.viewmodel.BookmarkViewModel
 import com.examsample.ui.detail.ProductDetailActivityContract
+import com.examsample.ui.home.model.ProductModel
+import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 
 class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
@@ -23,7 +26,15 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         ProductDetailActivityContract()
     ) { result: String? ->
         Logger.d("activity result >>> $result")
+        val productModel = Gson().fromJson(result, ProductModel::class.java)
+        //삭제유무 체크
         binding.bookmarkViewModel?.lastRequestSortType?.let { selectAllBookmarkList(it) }
+
+        
+        binding.bookmarkViewModel?.selectDBProductExists(binding.root.context, productModel)
+            ?.let {
+                compositeDisposable.add(it)
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,6 +57,10 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
                 ) as T
             }
         }).get(BookmarkViewModel::class.java)
+
+        binding.bookmarkEventViewModel = activity?.let {
+            ViewModelProvider(it).get(BookmarkEventViewModel::class.java)
+        }
 
         binding.rvBookmark.adapter = BookmarkAdapter(binding.bookmarkViewModel as BookmarkViewModel)
     }
@@ -87,8 +102,14 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
                         context,
                         bookmarkModel
                     )
+                    binding.bookmarkEventViewModel?.deletedObserveBookmark(bookmarkModel)
                 }
             })
+
+        //상세화면에서 북마크 체크여부
+        binding.bookmarkViewModel?.existsProductModel?.observe(viewLifecycleOwner, Observer {
+            binding.bookmarkEventViewModel?.deletedObserveBookmark(it)
+        })
     }
 
     private fun initLayout() {
@@ -128,7 +149,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
             }
             Handler().postDelayed({
                 binding.rvBookmark.layoutManager?.scrollToPosition(0)
-            },200)
+            }, 200)
 
         }
     }
@@ -139,7 +160,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         }
     }
 
-    fun listUpdate(){
+    fun listUpdate() {
         binding.bookmarkViewModel?.lastRequestSortType?.let { selectAllBookmarkList(it) }
     }
 

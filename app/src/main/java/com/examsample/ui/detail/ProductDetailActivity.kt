@@ -59,7 +59,7 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
         binding.productDetailViewModel?.let {
             compositeDisposable.add(
                 it.selectDBProductExists(
-                    this, productModel.id
+                    this, productModel
                 )
             )
         }

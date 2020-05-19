@@ -4,6 +4,9 @@ import android.content.Context
 import com.examsample.ui.bookmark.BookMarkSortType
 import com.examsample.ui.bookmark.local.BookmarkDatabase
 import com.examsample.ui.bookmark.model.BookmarkModel
+import com.examsample.ui.home.model.ProductModel
+import com.orhanobut.logger.Logger
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
@@ -66,5 +69,25 @@ class BookMarkRepository {
             BookmarkDatabase.getInstance(context).bookmarkDao().insert(model)
         }
     }
+
+    fun selectDBProductExists(
+        context: Context,
+        productModel: ProductModel,
+        result: (exists: Boolean, model: ProductModel) -> Unit,
+        onFail: (error: String) -> Unit
+        ): Disposable =
+        BookmarkDatabase.getInstance(context).bookmarkDao().selectProductExists(productModel.id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ exists ->
+                Logger.d("selectDBProductExists exists >>> $exists")
+                when (exists) {
+                    1 -> result(true, productModel)
+                    else -> result(false, productModel)
+                }
+            }, { error ->
+                onFail(error.toString())
+                Logger.d("selectDBProductExists error Log >>> $error")
+            })
 
 }
