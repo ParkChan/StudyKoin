@@ -91,6 +91,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     fun listUpdate(){
-        binding.rvProduct.adapter?.notifyDataSetChanged()
+        
     }
 }

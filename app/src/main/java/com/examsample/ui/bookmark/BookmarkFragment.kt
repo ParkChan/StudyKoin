@@ -126,7 +126,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
                     )
                 }
             }
-            Handler().postDelayed(Runnable {
+            Handler().postDelayed({
                 binding.rvBookmark.layoutManager?.scrollToPosition(0)
             },200)
 
@@ -140,7 +140,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     }
 
     fun listUpdate(){
-        binding.bookmarkViewModel?.lastRequestSortType?.let { selectAllBookmarkList(it)}
+        binding.bookmarkViewModel?.lastRequestSortType?.let { selectAllBookmarkList(it) }
     }
 
 }

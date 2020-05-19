@@ -19,6 +19,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
         val fragmentList = listOf(HomeFragment(), BookmarkFragment())
         val pagerAdapter = ViewPagerAdapter(fragmentList, this)
 
+        binding.viewpager.offscreenPageLimit = 2
         binding.viewpager.adapter = pagerAdapter
         val tab = binding.tabLayout
         val tabTitleList =
