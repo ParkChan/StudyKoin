@@ -1,6 +1,7 @@
 package com.examsample.ui.bookmark
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.Observer
@@ -21,10 +22,8 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     private val activityResultLauncher: ActivityResultLauncher<String> = registerForActivityResult(
         ProductDetailActivityContract()
     ) { result: String? ->
-        result?.let {
-            Logger.d("activity result >>> $it")
-            selectAllBookmarkList()
-        }
+        Logger.d("activity result >>> $result")
+        binding.bookmarkViewModel?.lastRequestSortType?.let { selectAllBookmarkList(it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,20 +32,18 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         initViewModel()
         iniViewModelObserve()
         initLayout()
-        selectAllBookmarkList()
+        initListener()
+
     }
 
     @Suppress("UNCHECKED_CAST")
     private fun initViewModel() {
         binding.bookmarkViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return context?.let {
-                    BookmarkViewModel(
-                        BookMarkRepository(),
-                        activityResultLauncher,
-                        it
-                    )
-                } as T
+                return BookmarkViewModel(
+                    BookMarkRepository(),
+                    activityResultLauncher
+                ) as T
             }
         }).get(BookmarkViewModel::class.java)
 
@@ -54,6 +51,8 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     }
 
     private fun iniViewModelObserve() {
+
+        //DB 리스트 조회 성공
         binding.bookmarkViewModel?.bookmarkListData?.observe(viewLifecycleOwner, Observer {
             Logger.d("bookmarkViewModel observe listData $it")
             if (it.isNotEmpty()) {
@@ -66,9 +65,16 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
             }
 
         })
+
+        //DB 리스트 조회 실패
         binding.bookmarkViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
             Logger.d("bookmarkViewModel observe errorMessage $it")
             showToast(getString(R.string.common_toast_msg_network_error))
+        })
+
+        binding.bookmarkViewModel?.sortType?.observe(viewLifecycleOwner, Observer {
+            Logger.d("bookmarkViewModel observe sortType $it")
+            selectAllBookmarkList(it)
         })
 
         //즐겨찾기 삭제
@@ -83,16 +89,53 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
                     )
                 }
             })
-
     }
 
     private fun initLayout() {
-        binding.tvEmptyList.visibility = View.GONE
+        binding.rvBookmark.visibility = View.GONE
+        binding.tvEmptyList.visibility = View.VISIBLE
     }
 
-    private fun selectAllBookmarkList() {
-        binding.bookmarkViewModel?.let {
-            compositeDisposable.add(it.selectAll())
+    private fun initListener() {
+        binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            Logger.d("radioGroup checkedId $checkedId")
+
+            when (checkedId) {
+                R.id.radio_reg_date_desc -> {
+                    binding.bookmarkViewModel?.selectAll(
+                        binding.root.context,
+                        BookMarkSortType.RegDateDesc
+                    )
+                }
+                R.id.radio_reg_date_asc -> {
+                    binding.bookmarkViewModel?.selectAll(
+                        binding.root.context,
+                        BookMarkSortType.RegDateAsc
+                    )
+                }
+                R.id.radio_review_desc -> {
+                    binding.bookmarkViewModel?.selectAll(
+                        binding.root.context,
+                        BookMarkSortType.ReviewRatingDesc
+                    )
+                }
+                R.id.radio_review_asc -> {
+                    binding.bookmarkViewModel?.selectAll(
+                        binding.root.context,
+                        BookMarkSortType.ReviewRatingAsc
+                    )
+                }
+            }
+            Handler().postDelayed(Runnable {
+                binding.rvBookmark.layoutManager?.scrollToPosition(0)
+            },200)
+
+        }
+    }
+
+    private fun selectAllBookmarkList(sortType: BookMarkSortType) {
+        binding.bookmarkViewModel?.run {
+            compositeDisposable.add(selectAll(binding.root.context, sortType))
         }
     }
 

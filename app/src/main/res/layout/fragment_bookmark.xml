@@ -14,6 +14,50 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:padding="15dp"
+            android:checkedButton="@id/radio_reg_date_desc"
+            >
+            <RadioButton
+                android:id="@+id/radio_reg_date_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bookmark_sort_reg_date_desc"
+                android:textSize="13sp"
+                />
+
+            <RadioButton
+                android:id="@+id/radio_reg_date_asc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bookmark_sort_reg_date_asc"
+                android:textSize="13sp"
+                />
+
+            <RadioButton
+                android:id="@+id/radio_review_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bookmark_sort_review_desc"
+                android:textSize="13sp"
+                />
+            <RadioButton
+                android:id="@+id/radio_review_asc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bookmark_sort_review_asc"
+                android:textSize="13sp"
+                />
+        </RadioGroup>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_bookmark"
             bookMarkListData="@{bookmarkViewModel.bookmarkListData}"
@@ -24,19 +68,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radio_group"
             tools:listitem="@layout/item_bookmark" />
 
         <TextView
             android:id="@+id/tv_empty_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:gravity="center"
             android:text="@string/fragment_bookmark_no_list_data"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/radio_group"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

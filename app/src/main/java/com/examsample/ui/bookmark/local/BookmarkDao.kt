@@ -11,6 +11,22 @@ interface BookmarkDao : BaseDao<BookmarkModel> {
     @Query("SELECT * FROM bookmarkTable")
     fun selectAll(): Single<List<BookmarkModel>>
 
+    //등록일 내림차순
+    @Query("SELECT * FROM bookmarkTable ORDER BY regTimeStamp DESC")
+    fun selectAllRegDateDesc(): Single<List<BookmarkModel>>
+
+    //등록일 오름차순
+    @Query("SELECT * FROM bookmarkTable ORDER BY regTimeStamp ASC")
+    fun selectAllRegDateAsc(): Single<List<BookmarkModel>>
+
+    //리뷰 내림차순
+    @Query("SELECT * FROM bookmarkTable ORDER BY rate DESC")
+    fun selectAllReviewDesc(): Single<List<BookmarkModel>>
+
+    //리뷰 오름차순
+    @Query("SELECT * FROM bookmarkTable ORDER BY rate ASC")
+    fun selectAllReviewAsc(): Single<List<BookmarkModel>>
+
     @Query("SELECT EXISTS (SELECT *FROM bookmarkTable where id = :productId)")
     fun selectProductExists(productId: String): Single<Int>
 }
