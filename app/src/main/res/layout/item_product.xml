@@ -7,6 +7,12 @@
 
         <import type="android.view.View" />
 
+        <import type="android.content.Context" />
+
+        <variable
+            name="itemPosition"
+            type="int" />
+
         <variable
             name="homeViewModel"
             type="com.examsample.ui.home.viewmodel.HomeViewModel" />
@@ -68,12 +74,13 @@
                 tools:rating="3" />
 
             <ToggleButton
-                android:id="@+id/tb_is_bookmark"
-                bookmarkListener="@{homeViewModel}"
+                android:id="@+id/tb_bookmark"
+                isBookmark="@{homeViewModel}"
                 productModel="@{productModel}"
                 android:layout_width="44dp"
                 android:layout_height="36dp"
                 android:background="@drawable/selector_check_bookmark_toggle"
+                android:onClick="@{() -> homeViewModel.onClickBookMark(context, productModel)}"
                 android:textOff="@null"
                 android:textOn="@null"
                 app:layout_constraintBottom_toBottomOf="parent"

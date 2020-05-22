@@ -46,7 +46,7 @@
             tools:layout_height="220dp" />
 
         <ToggleButton
-            android:id="@+id/tb_is_bookmark"
+            android:id="@+id/tb_bookmark"
             android:layout_width="44dp"
             android:layout_height="36dp"
             android:layout_marginTop="10dp"
@@ -54,8 +54,9 @@
             android:background="@drawable/selector_check_bookmark_toggle"
             android:textOff="@null"
             android:textOn="@null"
-            app:bookmarkListener="@{productDetailViewModel}"
-            app:productModel="@{productModel}"
+            isBookmark="@{productDetailViewModel}"
+            productModel="@{productModel}"
+            android:onClick="@{() -> productDetailViewModel.onClickBookMark(context, productModel)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -33,12 +33,11 @@ class BookmarkAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         val bookmarkModel = getItem(position)
         bookmarkModel.also {
             Logger.d("position $position data >>> $bookmarkModel")
         }?.let {
-            (holder as CustomViewHolder).bind(it)
+            (holder as CustomViewHolder).bind(it, position)
         }
     }
 
@@ -48,8 +47,10 @@ class BookmarkAdapter(
         init {
             binding.bookmarkViewModel = bookmarkViewModel
         }
-        fun bind(model: BookmarkModel) {
+
+        fun bind(model: BookmarkModel, position: Int) {
             binding.setVariable(BR.bookmarkModel, model)
+            binding.setVariable(BR.itemPosition, position)
         }
     }
 

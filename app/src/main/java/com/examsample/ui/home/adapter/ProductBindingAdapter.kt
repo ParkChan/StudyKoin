@@ -6,7 +6,7 @@ import com.examsample.ui.home.model.ProductModel
 
 
 @BindingAdapter("productListData")
-fun productListData(recyclerView: RecyclerView, items: List<ProductModel>?) {
+fun setProductListData(recyclerView: RecyclerView, items: List<ProductModel>?) {
     items?.let {
         if (recyclerView.adapter is ProductAdapter) {
             (recyclerView.adapter as ProductAdapter).submitList(it)

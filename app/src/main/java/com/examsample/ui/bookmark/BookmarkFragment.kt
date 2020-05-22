@@ -12,7 +12,7 @@ import com.examsample.common.BaseFragment
 import com.examsample.common.viewmodel.BookmarkEventViewModel
 import com.examsample.databinding.FragmentBookmarkBinding
 import com.examsample.ui.bookmark.adapter.BookmarkAdapter
-import com.examsample.ui.bookmark.repository.BookMarkRepository
+import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.bookmark.viewmodel.BookmarkViewModel
 import com.examsample.ui.detail.ProductDetailActivityContract
 import com.examsample.ui.home.model.ProductModel
@@ -52,7 +52,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         binding.bookmarkViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return BookmarkViewModel(
-                    BookMarkRepository(),
+                    BookmarkRepository(),
                     activityResultLauncher
                 ) as T
             }
@@ -125,25 +125,25 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
                 R.id.radio_reg_date_desc -> {
                     binding.bookmarkViewModel?.selectAll(
                         binding.root.context,
-                        BookMarkSortType.RegDateDesc
+                        BookmarkSortType.RegDateDesc
                     )
                 }
                 R.id.radio_reg_date_asc -> {
                     binding.bookmarkViewModel?.selectAll(
                         binding.root.context,
-                        BookMarkSortType.RegDateAsc
+                        BookmarkSortType.RegDateAsc
                     )
                 }
                 R.id.radio_review_desc -> {
                     binding.bookmarkViewModel?.selectAll(
                         binding.root.context,
-                        BookMarkSortType.ReviewRatingDesc
+                        BookmarkSortType.ReviewRatingDesc
                     )
                 }
                 R.id.radio_review_asc -> {
                     binding.bookmarkViewModel?.selectAll(
                         binding.root.context,
-                        BookMarkSortType.ReviewRatingAsc
+                        BookmarkSortType.ReviewRatingAsc
                     )
                 }
             }
@@ -154,7 +154,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         }
     }
 
-    private fun selectAllBookmarkList(sortType: BookMarkSortType) {
+    private fun selectAllBookmarkList(sortType: BookmarkSortType) {
         binding.bookmarkViewModel?.run {
             compositeDisposable.add(selectAll(binding.root.context, sortType))
         }

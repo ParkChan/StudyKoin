@@ -3,19 +3,17 @@ package com.examsample.ui.detail
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.examsample.BR
 import com.examsample.R
 import com.examsample.common.BaseActivity
 import com.examsample.databinding.ActivityProductDetailBinding
-import com.examsample.ui.bookmark.repository.BookMarkRepository
+import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.detail.ProductDetailActivityContract.Companion.EXTRA_INPUT_PRODUCT_DETAIL_KEY
 import com.examsample.ui.detail.ProductDetailActivityContract.Companion.EXTRA_RESULT_PRODUCT_DETAIL_KEY
 import com.examsample.ui.home.model.ProductModel
 import com.google.gson.Gson
-import com.orhanobut.logger.Logger
 
 /**
  * 상품 상세화면
@@ -31,7 +29,6 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
         binding.setVariable(BR.productModel, productModel)
 
         initViewModel()
-        iniViewModelObserve()
         initLayoutComponent(productModel)
 
     }
@@ -42,27 +39,17 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
         binding.productDetailViewModel =
             ViewModelProvider(this, object : ViewModelProvider.Factory {
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    return ProductDetailViewModel(BookMarkRepository()) as T
+                    return ProductDetailViewModel(BookmarkRepository()) as T
                 }
             }).get(ProductDetailViewModel::class.java)
 
     }
 
-    private fun iniViewModelObserve() {
-        binding.productDetailViewModel?.exists?.observe(this, Observer {
-            Logger.d("productDetailViewModel observe exists $it")
-            binding.tbIsBookmark.isChecked = it
-        })
-    }
-
     private fun initLayoutComponent(productModel: ProductModel) {
-        binding.productDetailViewModel?.let {
-            compositeDisposable.add(
-                it.selectDBProductExists(
-                    this, productModel
-                )
-            )
-        }
+        binding.productDetailViewModel?.isBookMark(this, productModel.id, onResult =
+        {
+            binding.tbBookmark.isChecked = it
+        })
     }
 
     override fun onBackPressed() {

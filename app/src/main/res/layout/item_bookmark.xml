@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="itemPosition"
+            type="int" />
+
+        <variable
             name="bookmarkViewModel"
             type="com.examsample.ui.bookmark.viewmodel.BookmarkViewModel" />
 
@@ -82,7 +86,7 @@
                 tools:text="등록일 2020-05-18" />
 
             <ToggleButton
-                android:id="@+id/tb_is_bookmark"
+                android:id="@+id/tb_bookmark"
                 android:layout_width="44dp"
                 android:layout_height="36dp"
                 android:background="@drawable/bookmark_p"

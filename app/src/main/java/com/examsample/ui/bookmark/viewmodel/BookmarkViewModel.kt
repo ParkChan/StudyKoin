@@ -5,9 +5,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.examsample.ui.bookmark.BookMarkSortType
+import com.examsample.ui.bookmark.BookmarkSortType
 import com.examsample.ui.bookmark.model.BookmarkModel
-import com.examsample.ui.bookmark.repository.BookMarkRepository
+import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.home.model.DescriptionModel
 import com.examsample.ui.home.model.ProductModel
 import com.google.gson.Gson
@@ -15,7 +15,7 @@ import com.orhanobut.logger.Logger
 import io.reactivex.disposables.Disposable
 
 class BookmarkViewModel(
-    private val bookMarkRepository: BookMarkRepository,
+    private val bookmarkRepository: BookmarkRepository,
     private val activityResultLauncher: ActivityResultLauncher<String>
 ) : ViewModel() {
 
@@ -33,15 +33,15 @@ class BookmarkViewModel(
 
 
     //정렬 타입
-    private val _sortType = MutableLiveData<BookMarkSortType>().apply {
-        value = BookMarkSortType.RegDateDesc
+    private val _sortType = MutableLiveData<BookmarkSortType>().apply {
+        value = BookmarkSortType.RegDateDesc
     }
-    var sortType: LiveData<BookMarkSortType> = _sortType
+    var sortType: LiveData<BookmarkSortType> = _sortType
 
-    var lastRequestSortType: BookMarkSortType = BookMarkSortType.RegDateDesc
+    var lastRequestSortType: BookmarkSortType = BookmarkSortType.RegDateDesc
 
-    fun selectAll(context: Context, sortType: BookMarkSortType): Disposable =
-        bookMarkRepository.selectAll(context,
+    fun selectAll(context: Context, sortType: BookmarkSortType): Disposable =
+        bookmarkRepository.selectAll(context,
             sortType,
             onSuccess = {
                 lastRequestSortType = sortType
@@ -56,7 +56,7 @@ class BookmarkViewModel(
     }
 
     fun removeBookmark(context: Context, model: BookmarkModel) {
-        bookMarkRepository.deleteBookMark(context, model)
+        bookmarkRepository.deleteBookMark(context, model)
         selectAll(context, lastRequestSortType)
     }
 
@@ -78,7 +78,7 @@ class BookmarkViewModel(
     }
 
     fun selectDBProductExists(context: Context, productModel: ProductModel): Disposable =
-        bookMarkRepository.selectDBProductExists(
+        bookmarkRepository.selectDBProductExists(
             context,
             productModel,
             result = { exists, model ->

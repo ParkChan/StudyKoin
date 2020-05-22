@@ -11,7 +11,7 @@ import com.examsample.common.BaseFragment
 import com.examsample.common.ListScrollEvent
 import com.examsample.databinding.FragmentHomeBinding
 import com.examsample.network.api.GoodChoiceApi
-import com.examsample.ui.bookmark.repository.BookMarkRepository
+import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.detail.ProductDetailActivityContract
 import com.examsample.ui.home.adapter.ProductAdapter
 import com.examsample.ui.home.model.ProductModel
@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                         compositeDisposable,
                         SearchProductRemoteDataSource(GoodChoiceApi.create())
                     ),
-                    BookMarkRepository()
+                    BookmarkRepository()
                 ) as T
             }
         }).get(HomeViewModel::class.java)

@@ -11,7 +11,7 @@ import java.util.*
 
 
 @BindingAdapter("bookMarkListData")
-fun bookMarkListData(recyclerView: RecyclerView, items: List<BookmarkModel>?) {
+fun setBookMarkListData(recyclerView: RecyclerView, items: List<BookmarkModel>?) {
     items?.let {
         if (recyclerView.adapter is BookmarkAdapter) {
             (recyclerView.adapter as BookmarkAdapter).submitList(items)

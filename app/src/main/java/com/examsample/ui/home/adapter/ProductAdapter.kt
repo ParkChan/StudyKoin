@@ -54,7 +54,6 @@ class ProductAdapter(
 
         fun bind(model: ProductModel) {
             binding.setVariable(BR.productModel, model)
-            binding.homeViewModel?.isBookMark(binding.tbIsBookmark, model.id)
         }
     }
 

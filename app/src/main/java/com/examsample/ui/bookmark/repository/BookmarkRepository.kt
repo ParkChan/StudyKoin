@@ -1,7 +1,7 @@
 package com.examsample.ui.bookmark.repository
 
 import android.content.Context
-import com.examsample.ui.bookmark.BookMarkSortType
+import com.examsample.ui.bookmark.BookmarkSortType
 import com.examsample.ui.bookmark.local.BookmarkDatabase
 import com.examsample.ui.bookmark.model.BookmarkModel
 import com.examsample.ui.home.model.ProductModel
@@ -13,15 +13,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BookMarkRepository {
+class BookmarkRepository {
 
     fun selectAll(
         context: Context,
-        sort: BookMarkSortType,
+        sort: BookmarkSortType,
         onSuccess: (list: List<BookmarkModel>) -> Unit,
         onFail: (error: String) -> Unit
     ): Disposable = when(sort){
-        BookMarkSortType.RegDateDesc -> {
+        BookmarkSortType.RegDateDesc -> {
             BookmarkDatabase.getInstance(context).bookmarkDao().selectAllRegDateDesc()
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -30,7 +30,7 @@ class BookMarkRepository {
                     onFail(it.toString())
                 }
         }
-        BookMarkSortType.RegDateAsc -> {
+        BookmarkSortType.RegDateAsc -> {
             BookmarkDatabase.getInstance(context).bookmarkDao().selectAllRegDateAsc()
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -38,7 +38,7 @@ class BookMarkRepository {
                 }) {
                     onFail(it.toString())
                 }
-        }BookMarkSortType.ReviewRatingDesc -> {
+        }BookmarkSortType.ReviewRatingDesc -> {
             BookmarkDatabase.getInstance(context).bookmarkDao().selectAllReviewDesc()
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -46,7 +46,7 @@ class BookMarkRepository {
                 }) {
                     onFail(it.toString())
                 }
-        }BookMarkSortType.ReviewRatingAsc -> {
+        }BookmarkSortType.ReviewRatingAsc -> {
             BookmarkDatabase.getInstance(context).bookmarkDao().selectAllReviewAsc()
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -57,6 +57,18 @@ class BookMarkRepository {
         }
     }
 
+
+    fun deleteBookMark(context: Context, model: ProductModel) {
+        CoroutineScope(Dispatchers.IO).launch {
+            BookmarkDatabase.getInstance(context).bookmarkDao().delete(convertToBookMarkModel(model))
+        }
+    }
+
+    fun insertBookMark(context: Context, model: ProductModel) {
+        CoroutineScope(Dispatchers.IO).launch {
+            BookmarkDatabase.getInstance(context).bookmarkDao().insert(convertToBookMarkModel(model))
+        }
+    }
 
     fun deleteBookMark(context: Context, model: BookmarkModel) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -69,6 +81,7 @@ class BookMarkRepository {
             BookmarkDatabase.getInstance(context).bookmarkDao().insert(model)
         }
     }
+
 
     fun selectDBProductExists(
         context: Context,
@@ -89,5 +102,18 @@ class BookMarkRepository {
                 onFail(error.toString())
                 Logger.d("selectDBProductExists error Log >>> $error")
             })
+
+    private fun convertToBookMarkModel(model: ProductModel): BookmarkModel {
+        return BookmarkModel(
+            id = model.id,
+            name = model.name,
+            thumbnail = model.thumbnail,
+            imagePath = model.descriptionModel.imagePath,
+            subject = model.descriptionModel.subject,
+            price = model.descriptionModel.price,
+            rate = model.rate,
+            regTimeStamp = System.currentTimeMillis()
+        )
+    }
 
 }
