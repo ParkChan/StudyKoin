@@ -14,7 +14,7 @@ interface BaseDao<T> {
     fun insert(vararg obj: T): Completable
 
     @Delete
-    fun delete(vararg obj: T): Single<Boolean>
+    fun delete(vararg obj: T): Single<Int>
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     fun update(obj: T)

@@ -34,11 +34,11 @@ fun setTextWon(
 @BindingAdapter("isBookmark", "productModel")
 fun setBookmark(toggleButton: ToggleButton, viewModel: ViewModel, productModel: ProductModel) {
     if (viewModel is HomeViewModel) {
-        viewModel.isBookMark(toggleButton.context, productModel.id, onResult = {
+        viewModel.isBookMark(toggleButton.context, productModel, onResult = {
             toggleButton.isChecked = it
         })
     } else if (viewModel is ProductDetailViewModel) {
-        viewModel.isBookMark(toggleButton.context, productModel.id, onResult = {
+        viewModel.isBookMark(toggleButton.context, productModel, onResult = {
             toggleButton.isChecked = it
         })
     }

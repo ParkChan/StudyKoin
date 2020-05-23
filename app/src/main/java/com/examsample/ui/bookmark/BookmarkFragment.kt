@@ -27,14 +27,13 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     ) { result: String? ->
         Logger.d("activity result >>> $result")
         val productModel = Gson().fromJson(result, ProductModel::class.java)
-        //삭제유무 체크
+        
+        //북마크 리스트 갱신처리
         binding.bookmarkViewModel?.lastRequestSortType?.let { selectAllBookmarkList(it) }
 
-        
-        binding.bookmarkViewModel?.selectDBProductExists(binding.root.context, productModel)
-            ?.let {
-                compositeDisposable.add(it)
-            }
+        //제휴점 상세에서 북마크를 취소한것이 있는지 여부에 따라 홈 리스트 갱신처리
+        binding.bookmarkViewModel?.isBookmarkCanceled(binding.root.context, productModel)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -155,9 +154,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     }
 
     private fun selectAllBookmarkList(sortType: BookmarkSortType) {
-        binding.bookmarkViewModel?.run {
-            compositeDisposable.add(selectAll(binding.root.context, sortType))
-        }
+        binding.bookmarkViewModel?.selectAll(binding.root.context, sortType)
     }
 
     fun listUpdate() {

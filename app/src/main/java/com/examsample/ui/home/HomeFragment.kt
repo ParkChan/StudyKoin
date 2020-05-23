@@ -48,7 +48,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         binding.homeViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return HomeViewModel(
-                    compositeDisposable,
                     activityResultLauncher,
                     GoodChoiceRepository(
                         compositeDisposable,

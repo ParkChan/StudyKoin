@@ -46,10 +46,10 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
     }
 
     private fun initLayoutComponent(productModel: ProductModel) {
-        binding.productDetailViewModel?.isBookMark(this, productModel.id, onResult =
-        {
-            binding.tbBookmark.isChecked = it
-        })
+        binding.productDetailViewModel?.isBookMark(this, productModel,
+            onResult = {
+                binding.tbBookmark.isChecked = it
+            })
     }
 
     override fun onBackPressed() {

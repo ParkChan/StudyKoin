@@ -4,20 +4,18 @@ import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.examsample.common.viewmodel.BaseViewModel
 import com.examsample.ui.bookmark.BookmarkSortType
 import com.examsample.ui.bookmark.model.BookmarkModel
 import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.home.model.DescriptionModel
 import com.examsample.ui.home.model.ProductModel
 import com.google.gson.Gson
-import com.orhanobut.logger.Logger
-import io.reactivex.disposables.Disposable
 
 class BookmarkViewModel(
     private val bookmarkRepository: BookmarkRepository,
     private val activityResultLauncher: ActivityResultLauncher<String>
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _bookmarkListData = MutableLiveData<List<BookmarkModel>>()
     var bookmarkListData: LiveData<List<BookmarkModel>> = _bookmarkListData
@@ -40,8 +38,8 @@ class BookmarkViewModel(
 
     var lastRequestSortType: BookmarkSortType = BookmarkSortType.RegDateDesc
 
-    fun selectAll(context: Context, sortType: BookmarkSortType): Disposable =
-        bookmarkRepository.selectAll(context,
+    fun selectAll(context: Context, sortType: BookmarkSortType) {
+        compositeDisposable.add(bookmarkRepository.selectAll(context,
             sortType,
             onSuccess = {
                 lastRequestSortType = sortType
@@ -49,14 +47,15 @@ class BookmarkViewModel(
             }, onFail = {
                 _errorMessage.postValue(it)
             }
-        )
+        ))
+    }
 
     fun sendRemoveBookmarkData(model: BookmarkModel) {
         _removeBookmarkModel.postValue(model)
     }
 
     fun removeBookmark(context: Context, model: BookmarkModel) {
-        bookmarkRepository.deleteBookMark(context, model)
+        compositeDisposable.add(bookmarkRepository.deleteBookMark(context, model))
         selectAll(context, lastRequestSortType)
     }
 
@@ -77,18 +76,16 @@ class BookmarkViewModel(
         }
     }
 
-    fun selectDBProductExists(context: Context, productModel: ProductModel): Disposable =
-        bookmarkRepository.selectDBProductExists(
+    fun isBookmarkCanceled(context: Context, productModel: ProductModel) {
+        compositeDisposable.add(bookmarkRepository.selectExists(
             context,
             productModel,
-            result = { exists, model ->
-                Logger.d("selectDBProductExists removeData $exists")
-                if(!exists){
-                    _existsProductModel.value = model
+            result = { exists ->
+                if (!exists) {
+                    _existsProductModel.value = productModel
                 }
-            },
-            onFail = {
-                Logger.d("selectDBProductExists error Log >>> $it")
             }
-        )
+        ))
+    }
+
 }

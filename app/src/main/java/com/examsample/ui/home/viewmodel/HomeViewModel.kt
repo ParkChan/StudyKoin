@@ -5,23 +5,17 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import com.examsample.ui.bookmark.local.BookmarkDatabase
+import com.examsample.common.viewmodel.BaseViewModel
 import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.home.model.ProductModel
 import com.examsample.ui.home.repository.GoodChoiceRepository
 import com.google.gson.Gson
-import com.orhanobut.logger.Logger
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 class HomeViewModel(
-    private val compositeDisposable: CompositeDisposable,
     private val activityResultLauncher: ActivityResultLauncher<String>,
     private val goodChoiceRepository: GoodChoiceRepository,
     private val bookmarkRepository: BookmarkRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     companion object {
         private const val VISIBLE_THRESHOLD = 20
@@ -51,36 +45,30 @@ class HomeViewModel(
     }
 
     private fun insertBookMark(context: Context, model: ProductModel) {
-        bookmarkRepository.insertBookMark(context, model).
+        compositeDisposable.add(bookmarkRepository.insertBookMark(context, model))
+
     }
 
     private fun deleteBookMark(context: Context, model: ProductModel) {
-        bookmarkRepository.deleteBookMark(context, model)
+        compositeDisposable.add(bookmarkRepository.deleteBookMark(context, model))
     }
 
     fun isBookMark(
         context: Context,
-        productId: String,
+        productModel: ProductModel,
         onResult: (isBookMark: Boolean) -> Unit
     ) {
-        compositeDisposable.add(
-            BookmarkDatabase.getInstance(context)
-                .bookmarkDao().selectProductExists(productId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ exists ->
-                    Logger.d("selectDBProductExists exists >>> $exists")
-                    onResult(exists == 1)
-                }, { error ->
-                    Logger.d("selectDBProductExists error Log >>> $error")
-                    onResult(false)
-                })
+        bookmarkRepository.selectExists(
+            context,
+            productModel,
+            result = { exists ->
+                onResult(exists)
+            }
         )
     }
 
     fun onClickBookMark(context: Context, productModel: ProductModel) {
-        Logger.d("onClickBookMark >>> $productModel")
-        isBookMark(context, productModel.id, onResult = {
+        isBookMark(context, productModel, onResult = {
             if (it) {
                 deleteBookMark(context, productModel)
             } else {
