@@ -5,6 +5,7 @@ import androidx.room.Query
 import com.examsample.ui.bookmark.model.BookmarkModel
 import io.reactivex.Single
 
+
 @Dao
 interface BookmarkDao : BaseDao<BookmarkModel> {
 
@@ -27,7 +28,9 @@ interface BookmarkDao : BaseDao<BookmarkModel> {
     @Query("SELECT * FROM bookmarkTable ORDER BY rate ASC")
     fun selectAllReviewAsc(): Single<List<BookmarkModel>>
 
-    @Query("SELECT EXISTS (SELECT *FROM bookmarkTable where id = :productId)")
+    //즐겨찾기 등록 유무
+    @Query("SELECT EXISTS (SELECT *FROM bookmarkTable WHERE id = :productId)")
     fun selectProductExists(productId: String): Single<Int>
+
 }
 

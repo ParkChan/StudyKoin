@@ -51,7 +51,7 @@ class HomeViewModel(
     }
 
     private fun insertBookMark(context: Context, model: ProductModel) {
-        bookmarkRepository.insertBookMark(context, model)
+        bookmarkRepository.insertBookMark(context, model).
     }
 
     private fun deleteBookMark(context: Context, model: ProductModel) {
@@ -73,6 +73,7 @@ class HomeViewModel(
                     onResult(exists == 1)
                 }, { error ->
                     Logger.d("selectDBProductExists error Log >>> $error")
+                    onResult(false)
                 })
         )
     }

@@ -8,6 +8,8 @@ import com.examsample.ui.home.model.ProductModel
 import com.orhanobut.logger.Logger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Action
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,17 +59,28 @@ class BookmarkRepository {
         }
     }
 
-
-    fun deleteBookMark(context: Context, model: ProductModel) {
-        CoroutineScope(Dispatchers.IO).launch {
+    fun deleteBookMark(context: Context, model: ProductModel): Disposable =
             BookmarkDatabase.getInstance(context).bookmarkDao().delete(convertToBookMarkModel(model))
-        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ isSuccess ->
+                    Logger.d("deleteBookMark exists >>> $isSuccess")
+                }, { error ->
+                    Logger.d("deleteBookMark exists >>> $error")
+                })
     }
 
-    fun insertBookMark(context: Context, model: ProductModel) {
-        CoroutineScope(Dispatchers.IO).launch {
+    fun insertBookMark(context: Context, model: ProductModel): Disposable =
             BookmarkDatabase.getInstance(context).bookmarkDao().insert(convertToBookMarkModel(model))
-        }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ({
+                    Logger.d("insertBookMark exists Success")
+                }, {
+                    Logger.d("insertBookMark exists fail >>> ${it.message}")
+                }
+                )
+
     }
 
     fun deleteBookMark(context: Context, model: BookmarkModel) {
@@ -83,27 +96,27 @@ class BookmarkRepository {
     }
 
 
-    fun selectDBProductExists(
-        context: Context,
-        productModel: ProductModel,
-        result: (exists: Boolean, model: ProductModel) -> Unit,
-        onFail: (error: String) -> Unit
-        ): Disposable =
-        BookmarkDatabase.getInstance(context).bookmarkDao().selectProductExists(productModel.id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ exists ->
-                Logger.d("selectDBProductExists exists >>> $exists")
-                when (exists) {
-                    1 -> result(true, productModel)
-                    else -> result(false, productModel)
-                }
-            }, { error ->
-                onFail(error.toString())
-                Logger.d("selectDBProductExists error Log >>> $error")
-            })
 
-    private fun convertToBookMarkModel(model: ProductModel): BookmarkModel {
+fun selectDBProductExists(
+    context: Context,
+    productModel: ProductModel,
+    result: (exists: Boolean, model: ProductModel) -> Unit,
+    onFail: (error: String) -> Unit
+): Disposable =
+    BookmarkDatabase.getInstance(context).bookmarkDao().selectProductExists(productModel.id)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe({ exists ->
+            Logger.d("selectDBProductExists exists >>> $exists")
+            when (exists) {
+                1 -> result(true, productModel)
+                else -> result(false, productModel)
+            }
+        }, { error ->
+            onFail(error.toString())
+            Logger.d("selectDBProductExists error Log >>> $error")
+        })
+private fun convertToBookMarkModel(model: ProductModel): BookmarkModel {
         return BookmarkModel(
             id = model.id,
             name = model.name,
