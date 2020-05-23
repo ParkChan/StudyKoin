@@ -24,7 +24,7 @@ import com.orhanobut.logger.Logger
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
     R.layout.fragment_home
 ) {
-    private var productList = emptyList<ProductModel>()
+    private val productList = mutableListOf<ProductModel>()
     private val activityResultLauncher: ActivityResultLauncher<String> = registerForActivityResult(
         ProductDetailActivityContract()
     ) { result: String? ->
@@ -41,6 +41,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         initViewModel()
         iniViewModelObserve()
         initRecyclerViewPageEvent()
+        requestFistPage()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -50,7 +51,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 return HomeViewModel(
                     activityResultLauncher,
                     GoodChoiceRepository(
-                        compositeDisposable,
                         SearchProductRemoteDataSource(GoodChoiceApi.create())
                     ),
                     BookmarkRepository()
@@ -64,7 +64,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     private fun iniViewModelObserve() {
         binding.homeViewModel?.productListData?.observe(viewLifecycleOwner, Observer {
             Logger.d("homeViewModel observe listData $it")
-            productList = it
+            //productList.addAll(it)
         })
         binding.homeViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
             Logger.d("homeViewModel observe errorMessage $it")
@@ -87,6 +87,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 )
             }
         })
+    }
+
+    private fun requestFistPage(){
+        binding.homeViewModel?.requestFirst()
     }
 
     fun listUpdate(productModel: ProductModel){

@@ -2,14 +2,14 @@ package com.examsample.ui.home.viewmodel
 
 import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.examsample.common.viewmodel.BaseViewModel
+import com.examsample.network.NETWORK_ROW_COUNT
 import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.home.model.ProductModel
 import com.examsample.ui.home.repository.GoodChoiceRepository
 import com.google.gson.Gson
+import com.orhanobut.logger.Logger
 
 class HomeViewModel(
     private val activityResultLauncher: ActivityResultLauncher<String>,
@@ -21,22 +21,85 @@ class HomeViewModel(
         private const val VISIBLE_THRESHOLD = 20
     }
 
-    private val requestFirst = MutableLiveData<Boolean>().apply {
-        value = true
-    }
-    private val responseData = Transformations.map(requestFirst) {
-        goodChoiceRepository.requestFirst()
-    }
-    val productListData =
-        Transformations.switchMap(responseData) { it.productList }
+    private val defaultTotalPageCnt = 1
+    private val defaultStartPageNumber = 1
 
-    val errorMessage: LiveData<String> =
-        Transformations.switchMap(responseData) { it.errorMessage }
+    private var requestePage = defaultTotalPageCnt
+    private var totalPage = defaultTotalPageCnt
+    private var isProgress = false
+
+    private val _productListData = MutableLiveData<List<ProductModel>>()
+    val productListData = _productListData
+
+    private val _errorMessage: MutableLiveData<String> = MutableLiveData<String>()
+    val errorMessage = _errorMessage
+
+    private val listData = mutableListOf<ProductModel>()
 
     fun listScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
-        if (visibleItemCount + lastVisibleItemPosition + VISIBLE_THRESHOLD >= totalItemCount) {
-            goodChoiceRepository.requestNext()
+
+        Logger.d("listScrolled >>> $visibleItemCount $lastVisibleItemPosition $totalItemCount")
+
+        if (visibleItemCount + lastVisibleItemPosition >= totalItemCount) {
+            if (isProgress || requestePage > totalPage) {
+                return
+            }
+            requestNext()
         }
+    }
+
+    fun requestFirst() {
+        initPageInfo()
+        compositeDisposable.add(
+            goodChoiceRepository.requestData(
+                defaultStartPageNumber,
+                onSuccess = {
+
+                    listData.addAll(it.data.productList)
+                    _productListData.value = listData
+
+                    val totalCount = it.data.totalCount
+                    totalPage = if (totalCount / NETWORK_ROW_COUNT > 0) {
+                        (totalCount / NETWORK_ROW_COUNT) + 1
+                    } else {
+                        defaultTotalPageCnt
+                    }
+                    requestePage++
+                },
+                onFail = {
+                    _errorMessage.value = it
+                },
+                isProgress = {
+                    isProgress = it
+                }
+            )
+        )
+    }
+
+    private fun requestNext() {
+        //Logger.d("now Page >>> $requestedPage total Page >>> $totalPage")
+        compositeDisposable.add(
+            goodChoiceRepository.requestData(
+                requestePage,
+                onSuccess = {
+                    listData.addAll(it.data.productList)
+                    _productListData.value = listData
+                    requestePage++
+                },
+                onFail = {
+                    _errorMessage.value = it
+                },
+                isProgress = {
+                    isProgress = it
+                }
+            )
+        )
+    }
+
+    private fun initPageInfo() {
+        requestePage = defaultTotalPageCnt
+        totalPage = defaultTotalPageCnt
+        listData.clear()
     }
 
     //상품 상세화면으로 이동
