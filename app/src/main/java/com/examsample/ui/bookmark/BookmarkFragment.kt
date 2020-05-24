@@ -12,6 +12,7 @@ import com.examsample.common.BaseFragment
 import com.examsample.common.viewmodel.BookmarkEventViewModel
 import com.examsample.databinding.FragmentBookmarkBinding
 import com.examsample.ui.bookmark.adapter.BookmarkAdapter
+import com.examsample.ui.bookmark.local.BookmarkDataSource
 import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.bookmark.viewmodel.BookmarkViewModel
 import com.examsample.ui.detail.ProductDetailActivityContract
@@ -51,7 +52,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         binding.bookmarkViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return BookmarkViewModel(
-                    BookmarkRepository(),
+                    BookmarkRepository(BookmarkDataSource()),
                     activityResultLauncher
                 ) as T
             }

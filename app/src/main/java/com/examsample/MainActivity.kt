@@ -25,10 +25,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
 
         binding.viewpager.offscreenPageLimit = 2
         binding.viewpager.adapter = pagerAdapter
-        val tab = binding.tabLayout
+        val tabLayout = binding.tabLayout
         val tabTitleList =
             listOf(getString(R.string.title_home), getString(R.string.title_bookmark))
-        TabLayoutMediator(tab, binding.viewpager) { tab, position ->
+        TabLayoutMediator(tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTitleList[position]
         }.attach()
 

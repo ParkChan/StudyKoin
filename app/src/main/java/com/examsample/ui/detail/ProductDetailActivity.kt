@@ -9,6 +9,7 @@ import com.examsample.BR
 import com.examsample.R
 import com.examsample.common.BaseActivity
 import com.examsample.databinding.ActivityProductDetailBinding
+import com.examsample.ui.bookmark.local.BookmarkDataSource
 import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.detail.ProductDetailActivityContract.Companion.EXTRA_INPUT_PRODUCT_DETAIL_KEY
 import com.examsample.ui.detail.ProductDetailActivityContract.Companion.EXTRA_RESULT_PRODUCT_DETAIL_KEY
@@ -39,7 +40,7 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>(
         binding.productDetailViewModel =
             ViewModelProvider(this, object : ViewModelProvider.Factory {
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    return ProductDetailViewModel(BookmarkRepository()) as T
+                    return ProductDetailViewModel(BookmarkRepository(BookmarkDataSource())) as T
                 }
             }).get(ProductDetailViewModel::class.java)
 

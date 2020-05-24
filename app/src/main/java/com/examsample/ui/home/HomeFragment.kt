@@ -11,6 +11,7 @@ import com.examsample.common.BaseFragment
 import com.examsample.common.ListScrollEvent
 import com.examsample.databinding.FragmentHomeBinding
 import com.examsample.network.api.GoodChoiceApi
+import com.examsample.ui.bookmark.local.BookmarkDataSource
 import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.detail.ProductDetailActivityContract
 import com.examsample.ui.home.adapter.ProductAdapter
@@ -53,7 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                     GoodChoiceRepository(
                         SearchProductRemoteDataSource(GoodChoiceApi.create())
                     ),
-                    BookmarkRepository()
+                    BookmarkRepository(BookmarkDataSource())
                 ) as T
             }
         }).get(HomeViewModel::class.java)

@@ -35,7 +35,7 @@ abstract class BaseFragment<VDB : ViewDataBinding>(
         return binding.root
     }
 
-    protected fun setRecyclerViewScrollListener(
+    fun setRecyclerViewScrollListener(
         recyclerView: RecyclerView,
         listScrollEvent: ListScrollEvent
     ) {
