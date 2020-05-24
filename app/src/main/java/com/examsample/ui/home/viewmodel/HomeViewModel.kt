@@ -34,7 +34,6 @@ class HomeViewModel(
     private val listData = mutableListOf<ProductModel>()
 
     fun listScrolled(visibleItemCount: Int, fistVisibleItem: Int, totalItemCount: Int) {
-        Logger.d("listScrolled >>> $isProgress $visibleItemCount $fistVisibleItem $totalItemCount")
         if (visibleItemCount + fistVisibleItem >= totalItemCount) {
             if (isProgress || requestePage > totalPage) {
                 return
@@ -72,8 +71,8 @@ class HomeViewModel(
     }
 
     private fun requestNext() {
-        //Logger.d("now Page >>> $requestedPage total Page >>> $totalPage")
         isProgress = true
+        //Logger.d("now Page >>> $requestedPage total Page >>> $totalPage")
         compositeDisposable.add(
             goodChoiceRepository.requestData(
                 requestePage,
@@ -82,10 +81,12 @@ class HomeViewModel(
                     _productListData.value = listData
                     requestePage++
                     isProgress = false
+                    Logger.d("requestNext >>> onSuccess $isProgress")
                 },
                 onFail = {
                     _errorMessage.value = it
                     isProgress = false
+                    Logger.d("requestNext >>>  $isProgress")
                 }
             )
         )

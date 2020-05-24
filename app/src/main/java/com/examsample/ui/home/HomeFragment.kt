@@ -59,13 +59,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             }
         }).get(HomeViewModel::class.java)
 
-        binding.rvProduct.setHasFixedSize(true)
         binding.rvProduct.adapter = ProductAdapter(binding.homeViewModel as HomeViewModel)
     }
 
     private fun iniViewModelObserve() {
-            binding.homeViewModel?.productListData?.observe(viewLifecycleOwner, Observer {
+        binding.homeViewModel?.productListData?.observe(viewLifecycleOwner, Observer {
             Logger.d("homeViewModel observe listData $it")
+            productList.clear()
             productList.addAll(it)
         })
         binding.homeViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
@@ -91,11 +91,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         })
     }
 
-    private fun requestFistPage(){
+    private fun requestFistPage() {
         binding.homeViewModel?.requestFirst()
     }
 
-    fun listUpdate(productModel: ProductModel){
+    fun listUpdate(productModel: ProductModel) {
         val index = productList.indexOf(productModel)
         binding.rvProduct.adapter?.notifyItemChanged(index)
     }
