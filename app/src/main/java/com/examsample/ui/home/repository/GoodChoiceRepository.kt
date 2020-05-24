@@ -14,11 +14,7 @@ class GoodChoiceRepository(
     ): Disposable =
         searchProductRemoteDataSource.searchProductList(
             page,
-            onSuccess = {
-                onSuccess(it)
-            },
-            onFail = {
-                onFail(it)
-            }
+            onSuccess,
+            onFail
         )
 }
