@@ -2,6 +2,7 @@ package com.examsample.ui.home.viewmodel
 
 import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.examsample.common.viewmodel.BaseViewModel
 import com.examsample.network.NETWORK_ROW_COUNT
@@ -17,10 +18,6 @@ class HomeViewModel(
     private val bookmarkRepository: BookmarkRepository
 ) : BaseViewModel() {
 
-    companion object {
-        private const val VISIBLE_THRESHOLD = 20
-    }
-
     private val defaultTotalPageCnt = 1
     private val defaultStartPageNumber = 1
 
@@ -29,18 +26,16 @@ class HomeViewModel(
     private var isProgress = false
 
     private val _productListData = MutableLiveData<List<ProductModel>>()
-    val productListData = _productListData
+    val productListData: LiveData<List<ProductModel>> get() = _productListData
 
     private val _errorMessage: MutableLiveData<String> = MutableLiveData<String>()
-    val errorMessage = _errorMessage
+    val errorMessage: LiveData<String> get() = _errorMessage
 
     private val listData = mutableListOf<ProductModel>()
 
-    fun listScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
-
-        Logger.d("listScrolled >>> $visibleItemCount $lastVisibleItemPosition $totalItemCount")
-
-        if (visibleItemCount + lastVisibleItemPosition >= totalItemCount) {
+    fun listScrolled(visibleItemCount: Int, fistVisibleItem: Int, totalItemCount: Int) {
+        Logger.d("listScrolled >>> $isProgress $visibleItemCount $fistVisibleItem $totalItemCount")
+        if (visibleItemCount + fistVisibleItem >= totalItemCount) {
             if (isProgress || requestePage > totalPage) {
                 return
             }
@@ -50,6 +45,7 @@ class HomeViewModel(
 
     fun requestFirst() {
         initPageInfo()
+        isProgress = true
         compositeDisposable.add(
             goodChoiceRepository.requestData(
                 defaultStartPageNumber,
@@ -65,12 +61,11 @@ class HomeViewModel(
                         defaultTotalPageCnt
                     }
                     requestePage++
+                    isProgress = false
                 },
                 onFail = {
                     _errorMessage.value = it
-                },
-                isProgress = {
-                    isProgress = it
+                    isProgress = false
                 }
             )
         )
@@ -78,6 +73,7 @@ class HomeViewModel(
 
     private fun requestNext() {
         //Logger.d("now Page >>> $requestedPage total Page >>> $totalPage")
+        isProgress = true
         compositeDisposable.add(
             goodChoiceRepository.requestData(
                 requestePage,
@@ -85,12 +81,11 @@ class HomeViewModel(
                     listData.addAll(it.data.productList)
                     _productListData.value = listData
                     requestePage++
+                    isProgress = false
                 },
                 onFail = {
                     _errorMessage.value = it
-                },
-                isProgress = {
-                    isProgress = it
+                    isProgress = false
                 }
             )
         )

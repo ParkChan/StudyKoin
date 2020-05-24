@@ -58,13 +58,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             }
         }).get(HomeViewModel::class.java)
 
+        binding.rvProduct.setHasFixedSize(true)
         binding.rvProduct.adapter = ProductAdapter(binding.homeViewModel as HomeViewModel)
     }
 
     private fun iniViewModelObserve() {
-        binding.homeViewModel?.productListData?.observe(viewLifecycleOwner, Observer {
+            binding.homeViewModel?.productListData?.observe(viewLifecycleOwner, Observer {
             Logger.d("homeViewModel observe listData $it")
-            //productList.addAll(it)
+            productList.addAll(it)
         })
         binding.homeViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
             Logger.d("homeViewModel observe errorMessage $it")
@@ -77,12 +78,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
             override fun onScrolled(
                 visibleItemCount: Int,
-                lastVisibleItem: Int,
+                fistVisibleItem: Int,
                 totalItemCount: Int
             ) {
                 binding.homeViewModel?.listScrolled(
                     visibleItemCount,
-                    lastVisibleItem,
+                    fistVisibleItem,
                     totalItemCount
                 )
             }

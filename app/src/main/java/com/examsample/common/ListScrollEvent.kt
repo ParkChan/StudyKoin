@@ -1,5 +1,5 @@
 package com.examsample.common
 
 interface ListScrollEvent {
-    fun onScrolled(visibleItemCount: Int, lastVisibleItem: Int, totalItemCount: Int)
+    fun onScrolled(visibleItemCount: Int, fistVisibleItem: Int, totalItemCount: Int)
 }

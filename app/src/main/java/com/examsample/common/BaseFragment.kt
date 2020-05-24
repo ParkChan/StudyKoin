@@ -11,7 +11,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.reactivex.disposables.CompositeDisposable
 
 
 abstract class BaseFragment<VDB : ViewDataBinding>(
@@ -20,7 +19,6 @@ abstract class BaseFragment<VDB : ViewDataBinding>(
 ) : Fragment() {
 
     protected lateinit var binding: VDB
-    protected var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,13 +45,13 @@ abstract class BaseFragment<VDB : ViewDataBinding>(
                 super.onScrolled(recyclerView, dx, dy)
 
                 val visibleItemCount = layoutManager.childCount
-                val lastVisibleItem = layoutManager.findLastCompletelyVisibleItemPosition()
+                val fistVisibleItem = layoutManager.findFirstCompletelyVisibleItemPosition()
                 val totalItemCount = layoutManager.itemCount
 
                 listScrollEvent.run {
                     onScrolled(
                         visibleItemCount,
-                        lastVisibleItem,
+                        fistVisibleItem,
                         totalItemCount
                     )
                 }
@@ -65,16 +63,4 @@ abstract class BaseFragment<VDB : ViewDataBinding>(
         msg,
         Toast.LENGTH_SHORT
     ).show()
-
-    override fun onDestroyView() {
-        compositeDisposable.clear()
-        super.onDestroyView()
-    }
-
-    override fun onDetach() {
-        if (!compositeDisposable.isDisposed) {
-            compositeDisposable.dispose()
-        }
-        super.onDetach()
-    }
 }

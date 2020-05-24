@@ -10,8 +10,7 @@ class GoodChoiceRepository(
     fun requestData(
         page: Int,
         onSuccess: (resProductListModel: ResProductListModel) -> Unit,
-        onFail: (error: String) -> Unit,
-        isProgress: (isProgress: Boolean) -> Unit
+        onFail: (error: String) -> Unit
     ): Disposable =
         searchProductRemoteDataSource.searchProductList(
             page,
@@ -20,8 +19,6 @@ class GoodChoiceRepository(
             },
             onFail = {
                 onFail(it)
-            }, isProgress = {
-                isProgress(it)
             }
         )
 }

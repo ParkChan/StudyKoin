@@ -4,7 +4,6 @@ import android.content.Context
 import com.examsample.common.viewmodel.BaseViewModel
 import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.home.model.ProductModel
-import com.orhanobut.logger.Logger
 
 class ProductDetailViewModel(
     private val bookmarkRepository: BookmarkRepository
@@ -25,7 +24,6 @@ class ProductDetailViewModel(
     }
 
     fun onClickBookMark(context: Context, productModel: ProductModel) {
-        Logger.d("onClickBookMark >>> $productModel")
         isBookMark(context, productModel, onResult = {
             if (it) {
                 deleteBookMark(context, productModel)

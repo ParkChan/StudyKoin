@@ -18,23 +18,22 @@ class BookmarkViewModel(
 ) : BaseViewModel() {
 
     private val _bookmarkListData = MutableLiveData<List<BookmarkModel>>()
-    var bookmarkListData: LiveData<List<BookmarkModel>> = _bookmarkListData
+    val bookmarkListData: LiveData<List<BookmarkModel>> get() = _bookmarkListData
 
     private val _errorMessage = MutableLiveData<String>()
-    var errorMessage: LiveData<String> = _errorMessage
+    val errorMessage: LiveData<String> get() = _errorMessage
 
     private val _removeBookmarkModel = MutableLiveData<BookmarkModel>()
-    var removeBookmarkModel: LiveData<BookmarkModel> = _removeBookmarkModel
+    val removeBookmarkModel: LiveData<BookmarkModel> get() = _removeBookmarkModel
 
     private val _existsProductModel = MutableLiveData<ProductModel>()
-    val existsProductModel = _existsProductModel
-
+    val existsProductModel: LiveData<ProductModel> get() = _existsProductModel
 
     //정렬 타입
     private val _sortType = MutableLiveData<BookmarkSortType>().apply {
         value = BookmarkSortType.RegDateDesc
     }
-    var sortType: LiveData<BookmarkSortType> = _sortType
+    val sortType: LiveData<BookmarkSortType> get() = _sortType
 
     var lastRequestSortType: BookmarkSortType = BookmarkSortType.RegDateDesc
 
