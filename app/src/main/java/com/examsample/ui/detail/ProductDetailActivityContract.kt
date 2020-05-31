@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
+import com.google.gson.Gson
 
 class ProductDetailActivityContract :
     ActivityResultContract<ProductDetailContractData, ProductDetailContractData>() {
@@ -20,14 +21,17 @@ class ProductDetailActivityContract :
         intent.flags = (Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra(
             EXTRA_PRODUCT_DATA_KEY,
-            productDetailContractData
+            Gson().toJson(productDetailContractData)
         )
         return intent
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): ProductDetailContractData? {
         return when (resultCode) {
-            Activity.RESULT_OK -> intent?.getSerializableExtra(EXTRA_PRODUCT_DATA_KEY) as ProductDetailContractData
+            Activity.RESULT_OK -> Gson().fromJson(
+                intent?.getStringExtra(EXTRA_PRODUCT_DATA_KEY),
+                ProductDetailContractData::class.java
+            )
             else -> null
         }
     }

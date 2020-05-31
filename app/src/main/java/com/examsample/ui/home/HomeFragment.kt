@@ -28,10 +28,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     private val activityResultLauncher: ActivityResultLauncher<ProductDetailContractData> =
         registerForActivityResult(
             ProductDetailActivityContract()
-        ) { result: ProductDetailContractData? ->
-            result?.let {
-                (binding.rvProduct.adapter as ProductAdapter).notifyItemChanged(result.position)
-            }
+        ) { result: ProductDetailContractData ->
+            (binding.rvProduct.adapter as ProductAdapter).notifyItemChanged(result.position)
+            Logger.d("registerForActivityResult >>> position is ${result.position} ")
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,7 +1,6 @@
 package com.examsample.ui.home.model
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 data class ProductModel(
 
@@ -19,4 +18,4 @@ data class ProductModel(
 
     @SerializedName("rate")
     val rate: Float
-) : Serializable
+)

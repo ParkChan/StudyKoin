@@ -44,7 +44,7 @@ class ProductAdapter(
         productModel.also {
             Logger.d("position $position data >>> $productModel")
         }?.let {
-            (holder as CustomViewHolder).bind(it)
+            (holder as CustomViewHolder).bind(position, it)
         }
     }
 
@@ -59,7 +59,8 @@ class ProductAdapter(
             binding.homeViewModel = viewModel
         }
 
-        fun bind(model: ProductModel) {
+        fun bind(position: Int, model: ProductModel) {
+            binding.setVariable(BR.itemPosition, position)
             binding.setVariable(BR.productModel, model)
         }
     }

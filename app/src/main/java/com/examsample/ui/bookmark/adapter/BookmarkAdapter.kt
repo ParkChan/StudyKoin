@@ -16,7 +16,7 @@ import com.orhanobut.logger.Logger
 
 class BookmarkAdapter(
     private val bookmarkViewModel: BookmarkViewModel
-): ListAdapter<BookmarkModel, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
+) : ListAdapter<BookmarkModel, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemBookmarkBinding = DataBindingUtil.inflate(
@@ -37,20 +37,24 @@ class BookmarkAdapter(
         bookmarkModel.also {
             Logger.d("position $position data >>> $bookmarkModel")
         }?.let {
-            (holder as CustomViewHolder).bind(it, position)
+            (holder as CustomViewHolder).bind(position, it)
         }
     }
 
-    class CustomViewHolder(private val binding: ItemBookmarkBinding, view: View, bookmarkViewModel: BookmarkViewModel) :
+    class CustomViewHolder(
+        private val binding: ItemBookmarkBinding,
+        view: View,
+        bookmarkViewModel: BookmarkViewModel
+    ) :
         RecyclerView.ViewHolder(view) {
 
         init {
             binding.bookmarkViewModel = bookmarkViewModel
         }
 
-        fun bind(model: BookmarkModel, position: Int) {
-            binding.setVariable(BR.bookmarkModel, model)
+        fun bind(position: Int, model: BookmarkModel) {
             binding.setVariable(BR.itemPosition, position)
+            binding.setVariable(BR.bookmarkModel, model)
         }
     }
 
