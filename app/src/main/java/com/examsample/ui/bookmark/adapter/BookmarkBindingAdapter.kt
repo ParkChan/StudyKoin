@@ -24,7 +24,7 @@ fun setBookMarkListData(recyclerView: RecyclerView, items: List<BookmarkModel>?)
 fun setDateTime(textView: TextView, timestamp: Long) {
     val date = Date(timestamp)
     val simpleDateFormat = SimpleDateFormat(
-        textView.context.getString(R.string.bookmark_register_yyyy_mm_dd)
+        textView.context.getString(R.string.bookmark_register_yyyy_mm_dd_ss)
     )
     textView.text = simpleDateFormat.format(date)
 }

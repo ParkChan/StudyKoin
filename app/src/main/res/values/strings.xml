@@ -7,7 +7,7 @@
     <string name="bookmark_sort_review_desc">평점순↑</string>
     <string name="bookmark_sort_review_asc">평점순↓</string>
 
-    <string name="bookmark_register_yyyy_mm_dd">등록일 : yyyy-MM-dd HH시 mm분</string>
+    <string name="bookmark_register_yyyy_mm_dd_ss">등록일 : yyyy-MM-dd HH시 mm분 ss초</string>
 
     <!-- Toast message -->
     <string name="common_toast_msg_network_error">잠시 후 다시 이용해주세요.</string>
