@@ -16,25 +16,26 @@ import com.examsample.ui.bookmark.local.BookmarkDataSource
 import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.bookmark.viewmodel.BookmarkViewModel
 import com.examsample.ui.detail.ProductDetailActivityContract
-import com.examsample.ui.home.model.ProductModel
-import com.google.gson.Gson
+import com.examsample.ui.detail.ProductDetailContractData
 import com.orhanobut.logger.Logger
 
 class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     R.layout.fragment_bookmark
 ) {
-    private val activityResultLauncher: ActivityResultLauncher<String> = registerForActivityResult(
+    private val activityResultLauncher: ActivityResultLauncher<ProductDetailContractData> = registerForActivityResult(
         ProductDetailActivityContract()
-    ) { result: String? ->
+    ) { result: ProductDetailContractData? ->
         Logger.d("activity result >>> $result")
-        val productModel = Gson().fromJson(result, ProductModel::class.java)
-        
+
         //북마크 리스트 갱신처리
         binding.bookmarkViewModel?.lastRequestSortType?.let { selectAllBookmarkList(it) }
 
         //제휴점 상세에서 북마크를 취소한것이 있는지 여부에 따라 홈 리스트 갱신처리
-        binding.bookmarkViewModel?.isBookmarkCanceled(binding.root.context, productModel)
-
+        result?.productModel?.let {
+            binding.bookmarkViewModel?.isBookmarkCanceled(binding.root.context,
+                it
+            )
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

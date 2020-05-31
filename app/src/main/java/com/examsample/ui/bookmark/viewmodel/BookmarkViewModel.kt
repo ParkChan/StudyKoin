@@ -8,13 +8,13 @@ import com.examsample.common.viewmodel.BaseViewModel
 import com.examsample.ui.bookmark.BookmarkSortType
 import com.examsample.ui.bookmark.model.BookmarkModel
 import com.examsample.ui.bookmark.repository.BookmarkRepository
+import com.examsample.ui.detail.ProductDetailContractData
 import com.examsample.ui.home.model.DescriptionModel
 import com.examsample.ui.home.model.ProductModel
-import com.google.gson.Gson
 
 class BookmarkViewModel(
     private val bookmarkRepository: BookmarkRepository,
-    private val activityResultLauncher: ActivityResultLauncher<String>
+    private val activityResultLauncher: ActivityResultLauncher<ProductDetailContractData>
 ) : BaseViewModel() {
 
     private val _bookmarkListData = MutableLiveData<List<BookmarkModel>>()
@@ -59,7 +59,7 @@ class BookmarkViewModel(
     }
 
     //상품 상세화면으로 이동
-    fun startProductDetailActivity(model: BookmarkModel) {
+    fun startProductDetailActivity(position: Int, model: BookmarkModel) {
         ProductModel(
             id = model.id,
             name = model.name,
@@ -71,7 +71,7 @@ class BookmarkViewModel(
             ),
             rate = model.rate
         ).run {
-            activityResultLauncher.launch(Gson().toJson(this))
+            activityResultLauncher.launch(ProductDetailContractData(position, this))
         }
     }
 

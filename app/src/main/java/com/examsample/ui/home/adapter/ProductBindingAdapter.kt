@@ -10,10 +10,7 @@ import com.orhanobut.logger.Logger
 fun setProductListData(recyclerView: RecyclerView, items: List<ProductModel>?) {
     items?.let {
         if (recyclerView.adapter is ProductAdapter) {
-            val befortListSize = (recyclerView.adapter as ProductAdapter).currentList.size
-            Logger.d("productListData >>>> $befortListSize ${items.size}")
-            (recyclerView.adapter as ProductAdapter).submitList(it)
-            (recyclerView.adapter as ProductAdapter).notifyDataSetChanged()
+            (recyclerView.adapter as ProductAdapter).addProductList(it)
         }
     }
 }

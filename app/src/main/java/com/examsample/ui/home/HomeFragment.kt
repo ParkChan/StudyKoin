@@ -14,27 +14,25 @@ import com.examsample.network.api.GoodChoiceApi
 import com.examsample.ui.bookmark.local.BookmarkDataSource
 import com.examsample.ui.bookmark.repository.BookmarkRepository
 import com.examsample.ui.detail.ProductDetailActivityContract
+import com.examsample.ui.detail.ProductDetailContractData
 import com.examsample.ui.home.adapter.ProductAdapter
 import com.examsample.ui.home.model.ProductModel
 import com.examsample.ui.home.remote.SearchProductRemoteDataSource
 import com.examsample.ui.home.repository.GoodChoiceRepository
 import com.examsample.ui.home.viewmodel.HomeViewModel
-import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
     R.layout.fragment_home
 ) {
-    private val productList = mutableListOf<ProductModel>()
-    private val activityResultLauncher: ActivityResultLauncher<String> = registerForActivityResult(
-        ProductDetailActivityContract()
-    ) { result: String? ->
-        result?.let {
-            val productModel = Gson().fromJson(it, ProductModel::class.java)
-            val index = productList.indexOf(productModel)
-            binding.rvProduct.adapter?.notifyItemChanged(index)
+    private val activityResultLauncher: ActivityResultLauncher<ProductDetailContractData> =
+        registerForActivityResult(
+            ProductDetailActivityContract()
+        ) { result: ProductDetailContractData? ->
+            result?.let {
+                (binding.rvProduct.adapter as ProductAdapter).notifyItemChanged(result.position)
+            }
         }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,8 +63,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     private fun iniViewModelObserve() {
         binding.homeViewModel?.productListData?.observe(viewLifecycleOwner, Observer {
             Logger.d("homeViewModel observe listData $it")
-            productList.clear()
-            productList.addAll(it)
         })
         binding.homeViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
             Logger.d("homeViewModel observe errorMessage $it")
@@ -95,8 +91,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         binding.homeViewModel?.requestFirst()
     }
 
-    fun listUpdate(productModel: ProductModel) {
-        val index = productList.indexOf(productModel)
+    fun listUpdate(model: ProductModel) {
+        val index = (binding.rvProduct.adapter as ProductAdapter).productList.indexOf(model)
         binding.rvProduct.adapter?.notifyItemChanged(index)
     }
 }

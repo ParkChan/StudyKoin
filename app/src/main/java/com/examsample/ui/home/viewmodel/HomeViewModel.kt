@@ -7,13 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import com.examsample.common.viewmodel.BaseViewModel
 import com.examsample.network.NETWORK_ROW_COUNT
 import com.examsample.ui.bookmark.repository.BookmarkRepository
+import com.examsample.ui.detail.ProductDetailContractData
 import com.examsample.ui.home.model.ProductModel
 import com.examsample.ui.home.repository.GoodChoiceRepository
-import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 
 class HomeViewModel(
-    private val activityResultLauncher: ActivityResultLauncher<String>,
+    private val activityResultLauncher: ActivityResultLauncher<ProductDetailContractData>,
     private val goodChoiceRepository: GoodChoiceRepository,
     private val bookmarkRepository: BookmarkRepository
 ) : BaseViewModel() {
@@ -28,10 +28,9 @@ class HomeViewModel(
     private val _productListData = MutableLiveData<List<ProductModel>>()
     val productListData: LiveData<List<ProductModel>> get() = _productListData
 
-    private val _errorMessage: MutableLiveData<String> = MutableLiveData<String>()
+    private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
 
-    private val listData = mutableListOf<ProductModel>()
 
     fun listScrolled(visibleItemCount: Int, fistVisibleItem: Int, totalItemCount: Int) {
         if (visibleItemCount + fistVisibleItem >= totalItemCount) {
@@ -50,8 +49,7 @@ class HomeViewModel(
                 defaultStartPageNumber,
                 onSuccess = {
 
-                    listData.addAll(it.data.productList)
-                    _productListData.value = listData
+                    _productListData.value = it.data.productList
 
                     val totalCount = it.data.totalCount
                     totalPage = if (totalCount / NETWORK_ROW_COUNT > 0) {
@@ -77,8 +75,7 @@ class HomeViewModel(
             goodChoiceRepository.requestData(
                 requestePage,
                 onSuccess = {
-                    listData.addAll(it.data.productList)
-                    _productListData.value = listData
+                    _productListData.value = it.data.productList
                     requestePage++
                     isProgress = false
                     Logger.d("requestNext >>> onSuccess $isProgress")
@@ -95,12 +92,11 @@ class HomeViewModel(
     private fun initPageInfo() {
         requestePage = defaultTotalPageCnt
         totalPage = defaultTotalPageCnt
-        listData.clear()
     }
 
     //상품 상세화면으로 이동
-    fun startProductDetailActivity(model: ProductModel) {
-        activityResultLauncher.launch(Gson().toJson(model))
+    fun startProductDetailActivity(position: Int, productModel: ProductModel) {
+        activityResultLauncher.launch(ProductDetailContractData(position, productModel))
     }
 
     private fun insertBookMark(context: Context, model: ProductModel) {

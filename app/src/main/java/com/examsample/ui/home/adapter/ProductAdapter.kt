@@ -16,7 +16,14 @@ import com.orhanobut.logger.Logger
 
 class ProductAdapter(
     private val homeViewModel: HomeViewModel
-) : ListAdapter<ProductModel, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    val productList = mutableListOf<ProductModel>()
+
+    fun addProductList(list: List<ProductModel>) {
+        productList.addAll(list)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemProductBinding = DataBindingUtil.inflate(
@@ -33,7 +40,7 @@ class ProductAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val productModel = getItem(position)
+        val productModel = productList.get(position)
         productModel.also {
             Logger.d("position $position data >>> $productModel")
         }?.let {
@@ -65,5 +72,9 @@ class ProductAdapter(
             override fun areContentsTheSame(oldItem: ProductModel, newItem: ProductModel): Boolean =
                 oldItem == newItem
         }
+    }
+
+    override fun getItemCount(): Int {
+        return productList.size
     }
 }
