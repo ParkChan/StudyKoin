@@ -6,10 +6,10 @@
     <data>
         <variable
             name="productDetailViewModel"
-            type="com.examsample.ui.detail.ProductDetailViewModel" />
+            type="com.chan.ui.detail.ProductDetailViewModel" />
         <variable
             name="productModel"
-            type="com.examsample.ui.home.model.ProductModel" />
+            type="com.chan.ui.home.model.ProductModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +43,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_name"
-            tools:layout_height="220dp" />
+            tools:layout_height="220dp"
+            android:contentDescription="@string/activity_product_detail_iv_thumbnail_description" />
 
         <ToggleButton
             android:id="@+id/tb_bookmark"

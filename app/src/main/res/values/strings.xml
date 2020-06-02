@@ -13,4 +13,9 @@
     <string name="common_toast_msg_network_error">잠시 후 다시 이용해주세요.</string>
 
     <string name="fragment_bookmark_no_list_data">즐겨찾기 항목을 추가해주세요.</string>
+
+    <string name="activity_product_detail_iv_thumbnail_description">제휴점 이미지</string>
+    <string name="item_product_iv_thumbnail_description">제휴점 이미지</string>
+    <string name="item_bookmark_iv_thumbnail_description">북마크 제휴점 이미지</string>
+
 </resources>

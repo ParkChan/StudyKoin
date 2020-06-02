@@ -7,7 +7,7 @@
     <data>
         <variable
             name="bookmarkEventViewModel"
-            type="com.examsample.common.viewmodel.BookmarkEventViewModel" />
+            type="com.chan.common.viewmodel.BookmarkEventViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
