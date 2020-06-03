@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.chan.R
-import com.chan.common.BaseFragment
+import com.chan.common.base.BaseFragment
 import com.chan.common.viewmodel.BookmarkEventViewModel
 import com.chan.databinding.FragmentBookmarkBinding
 import com.chan.ui.bookmark.adapter.BookmarkAdapter

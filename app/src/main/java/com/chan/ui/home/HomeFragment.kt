@@ -7,8 +7,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.chan.R
-import com.chan.common.BaseFragment
 import com.chan.common.ListScrollEvent
+import com.chan.common.base.BaseFragment
 import com.chan.databinding.FragmentHomeBinding
 import com.chan.network.api.GoodChoiceApi
 import com.chan.ui.bookmark.local.BookmarkDataSource
@@ -91,7 +91,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     fun listUpdate(model: ProductModel) {
-        val index = (binding.rvProduct.adapter as ProductAdapter).productList.indexOf(model)
+        val index = (binding.rvProduct.adapter as ProductAdapter).items.indexOf(model)
         binding.rvProduct.adapter?.notifyItemChanged(index)
     }
 }

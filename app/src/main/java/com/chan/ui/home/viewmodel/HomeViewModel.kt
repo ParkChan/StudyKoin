@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.chan.common.viewmodel.BaseViewModel
+import com.chan.common.base.BaseViewModel
 import com.chan.network.NETWORK_ROW_COUNT
 import com.chan.ui.bookmark.repository.BookmarkRepository
 import com.chan.ui.detail.ProductDetailContractData
