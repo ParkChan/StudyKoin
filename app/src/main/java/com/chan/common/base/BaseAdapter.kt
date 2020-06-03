@@ -1,36 +1,11 @@
 package com.chan.common.base
 
-import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<A : Any>(
-    val binding: ViewDataBinding
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class BaseAdapter<A : Any>
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val items = mutableListOf<A>()
-
-    abstract fun onBindViewHolder(position: Int, item: Any?)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        initViewHolder()
-        return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ViewHolder).onBindViewHolder(position, items[position])
-    }
-
-    protected fun initViewHolder(){}
-
-    open class ViewHolder(
-        binding: ViewDataBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        open fun onBindViewHolder(position: Int, item: Any?) {
-            onBindViewHolder(position, item)
-        }
-    }
+    val items get() = mutableListOf<A>()
 
     override fun getItemCount(): Int {
         return items.size

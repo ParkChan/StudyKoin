@@ -4,20 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chan.BR
+import com.chan.common.base.BaseAdapter
+import com.chan.databinding.ItemProductBinding
 import com.chan.ui.home.model.ProductModel
 import com.chan.ui.home.viewmodel.HomeViewModel
-import com.examsample.databinding.ItemProductBinding
+
 
 class ProductAdapter(
     private val homeViewModel: HomeViewModel
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    val productList = mutableListOf<ProductModel>()
-
-    fun addProductList(list: List<ProductModel>) {
-        productList.addAll(list)
-        notifyDataSetChanged()
-    }
+) : BaseAdapter<ProductModel>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
@@ -28,7 +23,9 @@ class ProductAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as CustomViewHolder).bind(position, productList[position])
+        if(holder is CustomViewHolder){
+            holder.bind(position, items[position])
+        }
     }
 
     class CustomViewHolder(
@@ -39,9 +36,5 @@ class ProductAdapter(
             binding.setVariable(BR.itemPosition, position)
             binding.setVariable(BR.productModel, model)
         }
-    }
-
-    override fun getItemCount(): Int {
-        return productList.size
     }
 }
