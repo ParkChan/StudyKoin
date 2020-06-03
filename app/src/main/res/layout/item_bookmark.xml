@@ -13,11 +13,11 @@
 
         <variable
             name="bookmarkViewModel"
-            type="com.examsample.ui.bookmark.viewmodel.BookmarkViewModel" />
+            type="com.chan.ui.bookmark.viewmodel.BookmarkViewModel" />
 
         <variable
             name="bookmarkModel"
-            type="com.examsample.ui.bookmark.model.BookmarkModel" />
+            type="com.chan.ui.bookmark.model.BookmarkModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +34,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_height="200dp" />
+            tools:layout_height="200dp"
+            android:contentDescription="@string/item_bookmark_iv_thumbnail_description" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

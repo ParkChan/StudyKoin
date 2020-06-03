@@ -8,9 +8,9 @@
 사전 과제 : API 정보를 이용하여, 화면을 구성
 
 1. 아래 API 정보를 이용하여, 화면 구성
-https://www.gccompany.co.kr/App/json/1.json
-https://www.gccompany.co.kr/App/json/2.json
-https://www.gccompany.co.kr/App/json/3.json
+ - https://www.gccompany.co.kr/App/json/1.json
+ - https://www.gccompany.co.kr/App/json/2.json
+ - https://www.gccompany.co.kr/App/json/3.json
 
 2. 화면 구성
  - 2개의 리스트와 상세 화면으로 구성
