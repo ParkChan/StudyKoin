@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.chan.BR
 import com.chan.R
-import com.chan.common.BaseActivity
+import com.chan.common.base.BaseActivity
 import com.chan.databinding.ActivityProductDetailBinding
 import com.chan.ui.bookmark.local.BookmarkDataSource
 import com.chan.ui.bookmark.repository.BookmarkRepository

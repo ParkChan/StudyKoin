@@ -2,13 +2,11 @@ package com.chan.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.chan.BR
-import com.chan.R
-import com.chan.databinding.ItemProductBinding
 import com.chan.ui.home.model.ProductModel
 import com.chan.ui.home.viewmodel.HomeViewModel
+import com.examsample.databinding.ItemProductBinding
 
 class ProductAdapter(
     private val homeViewModel: HomeViewModel
@@ -22,12 +20,9 @@ class ProductAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding: ItemProductBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-            R.layout.item_product,
-            parent,
-            false
-        )
+        val binding =
+             ItemProductBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false)
         binding.setVariable(BR.homeViewModel, homeViewModel)
         return CustomViewHolder(binding)
     }
