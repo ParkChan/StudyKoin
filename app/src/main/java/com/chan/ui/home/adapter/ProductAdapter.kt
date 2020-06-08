@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chan.BR
-import com.chan.common.base.BaseAdapter
+import com.chan.common.base.BaseRecyclerAdapter
 import com.chan.databinding.ItemProductBinding
 import com.chan.ui.home.model.ProductModel
 import com.chan.ui.home.viewmodel.HomeViewModel
@@ -12,7 +12,7 @@ import com.chan.ui.home.viewmodel.HomeViewModel
 
 class ProductAdapter(
     private val homeViewModel: HomeViewModel
-) : BaseAdapter<ProductModel>() {
+) : BaseRecyclerAdapter<ProductModel>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =

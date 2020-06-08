@@ -2,7 +2,7 @@ package com.chan.common.base
 
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<A : Any>
+abstract class BaseRecyclerAdapter<A : Any>
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val items get() = mutableListOf<A>()
