@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.chan.common.viewmodel.BaseViewModel
+import com.chan.common.base.BaseViewModel
 import com.chan.ui.bookmark.BookmarkSortType
 import com.chan.ui.bookmark.model.BookmarkModel
 import com.chan.ui.bookmark.repository.BookmarkRepository

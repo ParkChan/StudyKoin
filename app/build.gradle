@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.chan"
@@ -87,4 +87,19 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    //Add Dagger dependencies
+    def daggerVer = "2.28"
+    api "com.google.dagger:dagger:$daggerVer"
+    kapt "com.google.dagger:dagger-compiler:$daggerVer"
+    //dagger.android
+    api "com.google.dagger:dagger-android:$daggerVer"
+    api "com.google.dagger:dagger-android-support:$daggerVer" // if you use the support libraries
+    kapt "com.google.dagger:dagger-android-processor:$daggerVer"
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xmaxerrs" << "500" // or whatever number you want
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package com.chan.common
+package com.chan.common.base
 
 import android.os.Bundle
 import android.widget.Toast
@@ -7,12 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
-abstract class BaseActivity<B : ViewDataBinding>(
+abstract class BaseActivity<VDB : ViewDataBinding>(
     @LayoutRes
     private val layoutResId: Int
 ) : AppCompatActivity() {
 
-    lateinit var binding: B
+    lateinit var binding: VDB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

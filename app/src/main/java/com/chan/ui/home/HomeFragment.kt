@@ -7,8 +7,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.chan.R
-import com.chan.common.BaseFragment
 import com.chan.common.ListScrollEvent
+import com.chan.common.base.BaseFragment
 import com.chan.databinding.FragmentHomeBinding
 import com.chan.network.api.GoodChoiceApi
 import com.chan.ui.bookmark.local.BookmarkDataSource
@@ -25,6 +25,7 @@ import com.orhanobut.logger.Logger
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
     R.layout.fragment_home
 ) {
+
     private val activityResultLauncher: ActivityResultLauncher<ProductDetailContractData> =
         registerForActivityResult(
             ProductDetailActivityContract()
@@ -35,11 +36,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        injectComponent()
         initViewModel()
         iniViewModelObserve()
         initRecyclerViewPageEvent()
         requestFistPage()
+    }
+
+    private fun injectComponent(){
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -1,7 +1,7 @@
 package com.chan.ui.detail
 
 import android.content.Context
-import com.chan.common.viewmodel.BaseViewModel
+import com.chan.common.base.BaseViewModel
 import com.chan.ui.bookmark.repository.BookmarkRepository
 import com.chan.ui.home.model.ProductModel
 

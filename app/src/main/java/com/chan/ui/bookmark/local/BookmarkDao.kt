@@ -29,7 +29,7 @@ interface BookmarkDao : BaseDao<BookmarkModel> {
     fun selectAllReviewAsc(): Single<List<BookmarkModel>>
 
     //즐겨찾기 등록 유무
-    @Query("SELECT EXISTS (SELECT *FROM bookmarkTable WHERE id = :productId)")
+    @Query("SELECT EXISTS (SELECT * FROM bookmarkTable WHERE id = :productId)")
     fun selectProductExists(productId: String): Single<Int>
 
 }

@@ -1,4 +1,4 @@
-package com.chan.common
+package com.chan.common.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chan.common.ListScrollEvent
 
 
 abstract class BaseFragment<VDB : ViewDataBinding>(

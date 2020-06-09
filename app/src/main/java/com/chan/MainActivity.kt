@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.chan.common.BaseActivity
 import com.chan.common.ViewPagerAdapter
 import com.chan.common.viewmodel.BookmarkEventViewModel
 import com.chan.databinding.ActivityMainBinding
@@ -12,13 +11,18 @@ import com.chan.ui.bookmark.BookmarkFragment
 import com.chan.ui.home.HomeFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.orhanobut.logger.Logger
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class MainActivity : BaseActivity<ActivityMainBinding>(
-    R.layout.activity_main
-) {
+class MainActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //AndroidInjection.inject(this@MainActivity)
 
         val fragmentList = listOf(HomeFragment(), BookmarkFragment())
         val pagerAdapter = ViewPagerAdapter(fragmentList, this)
@@ -48,6 +52,5 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
             Logger.d("deleteProductModel observe >>> $it")
             (pagerAdapter.list[0] as HomeFragment).listUpdate(it)
         })
-
     }
 }

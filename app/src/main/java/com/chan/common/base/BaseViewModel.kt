@@ -1,4 +1,4 @@
-package com.chan.common.viewmodel
+package com.chan.common.base
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
