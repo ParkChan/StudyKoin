@@ -14,12 +14,7 @@ class ProductAdapter(
     private val homeViewModel: HomeViewModel
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val productList = mutableListOf<ProductModel>()
-
-    fun addProductList(list: List<ProductModel>) {
-        productList.addAll(list)
-        notifyDataSetChanged()
-    }
+    val items = mutableListOf<ProductModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemProductBinding = DataBindingUtil.inflate(
@@ -33,7 +28,7 @@ class ProductAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as CustomViewHolder).bind(position, productList[position])
+        (holder as CustomViewHolder).bind(position, items[position])
     }
 
     class CustomViewHolder(
@@ -47,6 +42,26 @@ class ProductAdapter(
     }
 
     override fun getItemCount(): Int {
-        return productList.size
+        return items.size
+    }
+
+    fun replaceItems(items: List<ProductModel>?) {
+        items?.let {
+            with(this.items) {
+                clear()
+                addAll(it)
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun addAllItems(items: List<ProductModel>?) {
+        items?.let {
+            with(this.items) {
+                val positionStart = this.size
+                addAll(it)
+                notifyItemRangeInserted(positionStart, it.size)
+            }
+        }
     }
 }

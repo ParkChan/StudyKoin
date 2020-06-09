@@ -9,7 +9,7 @@ import com.chan.ui.home.model.ProductModel
 fun setProductListData(recyclerView: RecyclerView, items: List<ProductModel>?) {
     items?.let {
         if (recyclerView.adapter is ProductAdapter) {
-            (recyclerView.adapter as ProductAdapter).addProductList(it)
+            (recyclerView.adapter as ProductAdapter).addAllItems(it)
         }
     }
 }
