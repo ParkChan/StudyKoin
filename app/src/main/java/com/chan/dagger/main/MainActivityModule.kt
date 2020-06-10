@@ -12,9 +12,7 @@ import dagger.Provides
 @Module
 abstract class MainActivityModule {
 
-    @Module
     companion object {
-        @JvmStatic
         @Provides
         @ActivityScope
         fun provideActivityMainBinding(activity: MainActivity): ActivityMainBinding {
