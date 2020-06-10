@@ -2,16 +2,16 @@ package com.chan.common.base
 
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseRecyclerAdapter<A : Any>
+abstract class BaseRecyclerAdapter<T>
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val items get() = mutableListOf<A>()
+    val items = mutableListOf<T>()
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    fun replaceItems(items: List<A>?) {
+    fun replaceItems(items: List<T>?) {
         items?.let {
             with(this.items) {
                 clear()
@@ -21,7 +21,7 @@ abstract class BaseRecyclerAdapter<A : Any>
         }
     }
 
-    fun addAllItems(items: List<A>?) {
+    fun addAllItems(items: List<T>?) {
         items?.let {
             with(this.items) {
                 val positionStart = this.size

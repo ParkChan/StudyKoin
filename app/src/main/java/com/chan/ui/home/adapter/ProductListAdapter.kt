@@ -4,16 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chan.BR
+import com.chan.common.BindListAdapter
+import com.chan.common.base.BaseRecyclerAdapter
 import com.chan.databinding.ItemProductBinding
 import com.chan.ui.home.model.ProductModel
 import com.chan.ui.home.viewmodel.HomeViewModel
 
 
-class ProductAdapter(
+class ProductListAdapter(
     private val homeViewModel: HomeViewModel
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    val items = mutableListOf<ProductModel>()
+) : BaseRecyclerAdapter<ProductModel>(), BindListAdapter<List<ProductModel>> {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
@@ -39,27 +39,11 @@ class ProductAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
+    override fun replaceData(data: List<ProductModel>?) {
+        replaceItems(data)
     }
 
-    fun replaceItems(items: List<ProductModel>?) {
-        items?.let {
-            with(this.items) {
-                clear()
-                addAll(it)
-                notifyDataSetChanged()
-            }
-        }
-    }
-
-    fun addAllItems(items: List<ProductModel>?) {
-        items?.let {
-            with(this.items) {
-                val positionStart = this.size
-                addAll(it)
-                notifyItemRangeInserted(positionStart, it.size)
-            }
-        }
+    override fun addAllData(data: List<ProductModel>?) {
+        addAllItems(data)
     }
 }
