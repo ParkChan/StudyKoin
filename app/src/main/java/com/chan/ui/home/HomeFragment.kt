@@ -44,6 +44,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     private fun injectComponent(){
+
     }
 
     @Suppress("UNCHECKED_CAST")
