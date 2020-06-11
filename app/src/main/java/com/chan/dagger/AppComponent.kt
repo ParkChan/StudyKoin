@@ -16,6 +16,6 @@ import javax.inject.Singleton
 )
 
 interface AppComponent : AndroidInjector<App> {
-    @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<App>()
+    @Component.Factory
+    abstract class Factory : AndroidInjector.Factory<App>
 }

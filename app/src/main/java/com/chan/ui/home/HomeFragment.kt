@@ -15,7 +15,7 @@ import com.chan.ui.bookmark.local.BookmarkDataSource
 import com.chan.ui.bookmark.repository.BookmarkRepository
 import com.chan.ui.detail.ProductDetailActivityContract
 import com.chan.ui.detail.ProductDetailContractData
-import com.chan.ui.home.adapter.ProductAdapter
+import com.chan.ui.home.adapter.ProductListAdapter
 import com.chan.ui.home.model.ProductModel
 import com.chan.ui.home.remote.SearchProductRemoteDataSource
 import com.chan.ui.home.repository.GoodChoiceRepository
@@ -30,7 +30,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         registerForActivityResult(
             ProductDetailActivityContract()
         ) { result: ProductDetailContractData ->
-            (binding.rvProduct.adapter as ProductAdapter).notifyItemChanged(result.position)
+            (binding.rvProduct.adapter as ProductListAdapter).notifyItemChanged(result.position)
             Logger.d("registerForActivityResult >>> position is ${result.position} ")
         }
 
@@ -60,7 +60,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             }
         }).get(HomeViewModel::class.java)
 
-        binding.rvProduct.adapter = ProductAdapter(binding.homeViewModel as HomeViewModel)
+        binding.rvProduct.adapter = ProductListAdapter(binding.homeViewModel as HomeViewModel)
     }
 
     private fun iniViewModelObserve() {
@@ -95,7 +95,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     fun listUpdate(model: ProductModel) {
-        val index = (binding.rvProduct.adapter as ProductAdapter).items.indexOf(model)
+        val index = (binding.rvProduct.adapter as ProductListAdapter).items.indexOf(model)
         binding.rvProduct.adapter?.notifyItemChanged(index)
     }
 }
