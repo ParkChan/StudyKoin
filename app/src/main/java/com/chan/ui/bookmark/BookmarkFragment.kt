@@ -17,26 +17,29 @@ import com.chan.ui.bookmark.repository.BookmarkRepository
 import com.chan.ui.bookmark.viewmodel.BookmarkViewModel
 import com.chan.ui.detail.ProductDetailActivityContract
 import com.chan.ui.detail.ProductDetailContractData
+import com.chan.utils.showToast
 import com.orhanobut.logger.Logger
 
 class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     R.layout.fragment_bookmark
 ) {
-    private val activityResultLauncher: ActivityResultLauncher<ProductDetailContractData> = registerForActivityResult(
-        ProductDetailActivityContract()
-    ) { result: ProductDetailContractData? ->
-        Logger.d("activity result >>> $result")
+    private val activityResultLauncher: ActivityResultLauncher<ProductDetailContractData> =
+        registerForActivityResult(
+            ProductDetailActivityContract()
+        ) { result: ProductDetailContractData? ->
+            Logger.d("activity result >>> $result")
 
-        //북마크 리스트 갱신처리
-        binding.bookmarkViewModel?.lastRequestSortType?.let { selectAllBookmarkList(it) }
+            //북마크 리스트 갱신처리
+            binding.bookmarkViewModel?.lastRequestSortType?.let { selectAllBookmarkList(it) }
 
-        //제휴점 상세에서 북마크를 취소한것이 있는지 여부에 따라 홈 리스트 갱신처리
-        result?.productModel?.let {
-            binding.bookmarkViewModel?.isBookmarkCanceled(binding.root.context,
-                it
-            )
+            //제휴점 상세에서 북마크를 취소한것이 있는지 여부에 따라 홈 리스트 갱신처리
+            result?.productModel?.let {
+                binding.bookmarkViewModel?.isBookmarkCanceled(
+                    binding.root.context,
+                    it
+                )
+            }
         }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -85,7 +88,7 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         //DB 리스트 조회 실패
         binding.bookmarkViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
             Logger.d("bookmarkViewModel observe errorMessage $it")
-            showToast(getString(R.string.common_toast_msg_network_error))
+            context?.let { showToast(it, getString(R.string.common_toast_msg_network_error)) }
         })
 
         binding.bookmarkViewModel?.sortType?.observe(viewLifecycleOwner, Observer {
@@ -110,6 +113,10 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
         //상세화면에서 북마크 체크여부
         binding.bookmarkViewModel?.existsProductModel?.observe(viewLifecycleOwner, Observer {
             binding.bookmarkEventViewModel?.deletedObserveBookmark(it)
+        })
+
+        binding.bookmarkViewModel?.productItemSelected?.observe(viewLifecycleOwner, Observer {
+            activityResultLauncher.launch(ProductDetailContractData(it.position, it.productModel))
         })
     }
 

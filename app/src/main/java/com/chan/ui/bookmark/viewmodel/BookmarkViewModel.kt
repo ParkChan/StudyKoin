@@ -37,6 +37,9 @@ class BookmarkViewModel(
 
     var lastRequestSortType: BookmarkSortType = BookmarkSortType.RegDateDesc
 
+    private val _productItemSelected = MutableLiveData<ProductDetailContractData>()
+    val productItemSelected get() = _productItemSelected
+
     fun selectAll(context: Context, sortType: BookmarkSortType) {
         compositeDisposable.add(bookmarkRepository.selectAll(context,
             sortType,
@@ -71,7 +74,7 @@ class BookmarkViewModel(
             ),
             rate = model.rate
         ).run {
-            activityResultLauncher.launch(ProductDetailContractData(position, this))
+            _productItemSelected.value = ProductDetailContractData(position, this)
         }
     }
 
