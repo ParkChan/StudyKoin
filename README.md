@@ -1,4 +1,4 @@
-# ExamSample
+# StudyKoin
 
 ### 적용 기술
 - Android JetPack Architecture
@@ -8,6 +8,7 @@
   - Room
   - ViewModel
   - ViewPager2
+  - ActivityResultLauncher
 
 - Network
   - Retrofit
