@@ -8,6 +8,12 @@
         <variable
             name="homeViewModel"
             type="com.chan.ui.home.viewmodel.HomeViewModel" />
+
+        <variable
+            name="bookmarkEventViewModel"
+            type="com.chan.common.viewmodel.BookmarkEventViewModel" />
+
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

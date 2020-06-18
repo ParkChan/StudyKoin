@@ -1,7 +1,6 @@
 package com.chan.ui.bookmark.viewmodel
 
 import android.content.Context
-import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.chan.common.base.BaseViewModel
@@ -13,8 +12,7 @@ import com.chan.ui.home.model.DescriptionModel
 import com.chan.ui.home.model.ProductModel
 
 class BookmarkViewModel(
-    private val bookmarkRepository: BookmarkRepository,
-    private val activityResultLauncher: ActivityResultLauncher<ProductDetailContractData>
+    private val bookmarkRepository: BookmarkRepository
 ) : BaseViewModel() {
 
     private val _bookmarkListData = MutableLiveData<List<BookmarkModel>>()

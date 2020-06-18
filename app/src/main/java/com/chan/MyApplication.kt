@@ -6,7 +6,6 @@ import com.chan.di.getRetrofitModule
 import com.chan.di.viewModelMudules
 import com.chan.network.BASE_URL
 import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.BuildConfig
 import com.orhanobut.logger.Logger
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

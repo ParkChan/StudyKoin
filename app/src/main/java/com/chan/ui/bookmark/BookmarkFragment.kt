@@ -5,24 +5,26 @@ import android.os.Handler
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.chan.R
 import com.chan.common.base.BaseFragment
 import com.chan.common.viewmodel.BookmarkEventViewModel
 import com.chan.databinding.FragmentBookmarkBinding
 import com.chan.ui.bookmark.adapter.BookmarkAdapter
-import com.chan.ui.bookmark.local.BookmarkDataSource
-import com.chan.ui.bookmark.repository.BookmarkRepository
 import com.chan.ui.bookmark.viewmodel.BookmarkViewModel
 import com.chan.ui.detail.ProductDetailActivityContract
 import com.chan.ui.detail.ProductDetailContractData
 import com.chan.utils.showToast
 import com.orhanobut.logger.Logger
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
     R.layout.fragment_bookmark
 ) {
+
+    private val bookmarkViewModel: BookmarkViewModel by viewModel()
+    private val bookmarkEventViewModel by sharedViewModel<BookmarkEventViewModel>()
+
     private val activityResultLauncher: ActivityResultLauncher<ProductDetailContractData> =
         registerForActivityResult(
             ProductDetailActivityContract()
@@ -53,18 +55,8 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(
 
     @Suppress("UNCHECKED_CAST")
     private fun initViewModel() {
-        binding.bookmarkViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return BookmarkViewModel(
-                    BookmarkRepository(BookmarkDataSource()),
-                    activityResultLauncher
-                ) as T
-            }
-        }).get(BookmarkViewModel::class.java)
-
-        binding.bookmarkEventViewModel = activity?.let {
-            ViewModelProvider(it).get(BookmarkEventViewModel::class.java)
-        }
+        binding.bookmarkViewModel = bookmarkViewModel
+        binding.bookmarkEventViewModel = bookmarkEventViewModel
 
         binding.rvBookmark.adapter = BookmarkAdapter(binding.bookmarkViewModel as BookmarkViewModel)
     }
