@@ -43,7 +43,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         requestFistPage()
     }
 
-    @Suppress("UNCHECKED_CAST")
     private fun initViewModel() {
         binding.homeViewModel = homeViewModel
         binding.bookmarkEventViewModel = bookmarkEventViewModel
@@ -52,22 +51,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     private fun iniViewModelObserve() {
-        binding.homeViewModel?.productListData?.observe(viewLifecycleOwner, Observer {
-            Logger.d("homeViewModel observe listData $it")
-        })
-        binding.homeViewModel?.errorMessage?.observe(viewLifecycleOwner, Observer {
-            Logger.d("homeViewModel observe errorMessage $it")
-            context?.let { showToast(it, getString(R.string.common_toast_msg_network_error)) }
-        })
+        binding.homeViewModel?.productListData?.observe(
+            viewLifecycleOwner,
+            Observer {
+                Logger.d("homeViewModel observe listData $it")
+            })
+        binding.homeViewModel?.errorMessage?.observe(
+            viewLifecycleOwner,
+            Observer {
+                context?.let { showToast(it, getString(R.string.common_toast_msg_network_error)) }
+            })
 
-        binding.homeViewModel?.productItemSelected?.observe(viewLifecycleOwner, Observer {
-            activityResultLauncher.launch(ProductDetailContractData(it.position, it.productModel))
-        })
+        binding.homeViewModel?.productItemSelected?.observe(
+            viewLifecycleOwner,
+            Observer {
+                activityResultLauncher.launch(
+                    ProductDetailContractData(
+                        it.position,
+                        it.productModel
+                    )
+                )
+            })
 
-        binding.bookmarkEventViewModel?.deleteProductModel?.observe(viewLifecycleOwner, Observer {
-            Logger.d("bookmarkEventViewModel observe deleteProductModel $it")
-            listUpdate(it)
-        })
+        binding.bookmarkEventViewModel?.deleteProductModel?.observe(
+            viewLifecycleOwner,
+            Observer {
+                Logger.d("bookmarkEventViewModel observe deleteProductModel $it")
+                listUpdate(it)
+            })
     }
 
     private fun initRecyclerViewPageEvent() {
@@ -91,7 +102,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         binding.homeViewModel?.requestFirst()
     }
 
-    fun listUpdate(model: ProductModel) {
+    private fun listUpdate(model: ProductModel) {
         val index = (binding.rvProduct.adapter as ProductListAdapter).items.indexOf(model)
         binding.rvProduct.adapter?.notifyItemChanged(index)
     }

@@ -16,7 +16,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val fragmentList = listOf(HomeFragment(), BookmarkFragment())
+        val fragmentList =
+            listOf(
+                HomeFragment(),
+                BookmarkFragment()
+            )
         val pagerAdapter = ViewPagerAdapter(fragmentList, this)
 
         binding.viewpager.offscreenPageLimit = 2
